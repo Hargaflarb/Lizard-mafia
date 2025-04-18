@@ -8,6 +8,23 @@ namespace Lizard_game
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private static GameWorld instance;
+        private float deltaTime;
+
+        public float DeltaTime { get; set; }
+        public GraphicsDeviceManager Graphics { get { return _graphics; } }
+
+        public static GameWorld Instance 
+        { 
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new GameWorld();
+                }
+                return instance;
+            } 
+        }
 
         public GameWorld()
         {
@@ -18,7 +35,8 @@ namespace Lizard_game
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            _graphics.PreferredBackBufferHeight = 1080;
+            _graphics.PreferredBackBufferWidth = 1920;
 
             base.Initialize();
         }
@@ -35,7 +53,7 @@ namespace Lizard_game
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             base.Update(gameTime);
         }
