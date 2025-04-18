@@ -1,12 +1,11 @@
-﻿using Lizard_game.ComponentPattern;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lizard_game.Characters
+namespace Lizard_game.ComponentPattern
 {
     public class Player : Component
     {
@@ -20,8 +19,8 @@ namespace Lizard_game.Characters
         {
             SpriteRenderer sr = GameObject.GetComponent<SpriteRenderer>() as SpriteRenderer;
             sr.SetSprite("");
-            GameObject.Transform.Position = new Vector2(GameWorld.Instance.Graphics.PreferredBackBufferWidth / 2, 
-                (GameWorld.Instance.Graphics.PreferredBackBufferHeight - sr.Sprite.Height / 3) - 200);
+            GameObject.Transform.Position = new Vector2(GameWorld.Instance.Graphics.PreferredBackBufferWidth / 2,
+                GameWorld.Instance.Graphics.PreferredBackBufferHeight - sr.Sprite.Height / 3 - 200);
             speed = 300;
         }
 
@@ -37,7 +36,7 @@ namespace Lizard_game.Characters
 
         public override void Update()
         {
-            
+
         }
     }
 }
