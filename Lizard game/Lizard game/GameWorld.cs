@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Lizard_game.Command;
-using Lizard_game.Characters;
 using Lizard_game.ComponentPattern;
 
 namespace Lizard_game

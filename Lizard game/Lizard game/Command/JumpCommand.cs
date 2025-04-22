@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Lizard_game.Characters;
 using Lizard_game.ComponentPattern;
 
 
