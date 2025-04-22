@@ -1,3 +1,3 @@
 ﻿
-using var game = new Lizard_game.GameWorld();
+using var game = Lizard_game.GameWorld.Instance;
 game.Run();

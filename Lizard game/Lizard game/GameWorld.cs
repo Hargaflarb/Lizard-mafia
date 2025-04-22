@@ -29,7 +29,7 @@ namespace Lizard_game
             } 
         }
 
-        public GameWorld()
+        private GameWorld()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -66,6 +66,7 @@ namespace Lizard_game
 
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+            InputHandler.HandleInput();
             base.Update(gameTime);
         }
 
