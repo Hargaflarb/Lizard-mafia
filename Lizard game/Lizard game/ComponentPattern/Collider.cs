@@ -15,7 +15,7 @@ namespace Lizard_game.ComponentPattern
         private bool isDrawing;
         private List<RectangleData> pixelPerfectRectangles;
 
-        public List<RectangleData> PixelPerfectRectangles { get; set; }
+        public List<RectangleData> PixelPerfectRectangles { get => pixelPerfectRectangles; set => pixelPerfectRectangles = value; }
 
         public Collider(GameObject gameObject) : base(gameObject)
         {
@@ -24,7 +24,8 @@ namespace Lizard_game.ComponentPattern
         public override void Start()
         {
             spriteRenderer = GameObject.GetComponent<SpriteRenderer>() as SpriteRenderer;
-            pixel = GameWorld.Instance.Content.Load<Texture2D>("");
+            pixel = GameWorld.Instance.Pixel;
+            PixelPerfectRectangles=new List<RectangleData>();
         }
 
         public Rectangle CollisionBox
@@ -37,7 +38,6 @@ namespace Lizard_game.ComponentPattern
                     spriteRenderer.Sprite.Height);
             }
         }
-
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (isDrawing)
