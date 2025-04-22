@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Lizard_game.Command;
+using Lizard_game.ComponentPattern;
 
 namespace Lizard_game
 {
@@ -26,7 +28,7 @@ namespace Lizard_game
             } 
         }
 
-        public GameWorld()
+        private GameWorld()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -38,6 +40,14 @@ namespace Lizard_game
             _graphics.PreferredBackBufferHeight = 1080;
             _graphics.PreferredBackBufferWidth = 1920;
             _graphics.ApplyChanges();
+
+            GameObject playerObject = new GameObject();
+            playerObject.AddComponent<Player>();
+            InputHandler.AddHeldKeyBind(Keys.D, new MoveCommand((Player)playerObject.GetComponent<Player>(), new Vector2(1, 0)));
+            InputHandler.AddHeldKeyBind(Keys.A, new MoveCommand((Player)playerObject.GetComponent<Player>(), new Vector2(-1, 0)));
+            InputHandler.AddHeldKeyBind(Keys.LeftShift, new SprintCommand((Player)playerObject.GetComponent<Player>()));
+            InputHandler.AddClickedKeyBind(Keys.Space, new JumpCommand((Player)playerObject.GetComponent<Player>()));
+            InputHandler.AddClickedKeyBind(Keys.R, new ResetCommand((Player)playerObject.GetComponent<Player>()));
 
             base.Initialize();
         }
@@ -56,6 +66,7 @@ namespace Lizard_game
 
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+            InputHandler.HandleInput();
             base.Update(gameTime);
         }
 
