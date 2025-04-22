@@ -39,6 +39,7 @@ namespace Lizard_game
         {
             _graphics.PreferredBackBufferHeight = 1080;
             _graphics.PreferredBackBufferWidth = 1920;
+            _graphics.ApplyChanges();
 
             GameObject playerObject = new GameObject();
             playerObject.AddComponent<Player>();
