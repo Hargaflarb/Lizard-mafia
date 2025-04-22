@@ -37,6 +37,7 @@ namespace Lizard_game
         {
             _graphics.PreferredBackBufferHeight = 1080;
             _graphics.PreferredBackBufferWidth = 1920;
+            _graphics.ApplyChanges();
 
             base.Initialize();
         }
