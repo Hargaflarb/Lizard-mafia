@@ -38,6 +38,7 @@ namespace Lizard_game.ComponentPattern
                     spriteRenderer.Sprite.Height);
             }
         }
+
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (isDrawing)
