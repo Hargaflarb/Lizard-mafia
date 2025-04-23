@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Lizard_game.ComponentPattern
 {
@@ -115,6 +116,42 @@ namespace Lizard_game.ComponentPattern
             }
             return returnListOfRectangles;
         }
+
+
+        /// <summary>
+        /// checks if the two colliders are colliding acording to pixel perfect collision
+        /// </summary>
+        /// <param name="colider">other collider</param>
+        /// <returns>wether or not the two are colliding</returns>
+        public bool IsPixelPerfectColliding(Collider colider)
+        {
+            if (CollisionBox.Intersects(colider.CollisionBox))
+            {
+                foreach (RectangleData data1 in PixelPerfectRectangles)
+                {
+                    foreach (RectangleData data2 in colider.PixelPerfectRectangles)
+                    {
+                        if (data1.Rectangle.Intersects(data2.Rectangle))
+                        {
+                            return true;
+                        }
+                    }
+
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// checks if the two colliders are colliding.
+        /// </summary>
+        /// <param name="colider">other collider</param>
+        /// <returns>wether or not the two are colliding</returns>
+        public bool IsColliding(Collider colider)
+        {
+            return CollisionBox.Intersects(colider.CollisionBox);
+        }
+
     }
 
     public class RectangleData

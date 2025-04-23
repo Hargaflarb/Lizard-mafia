@@ -25,5 +25,6 @@ namespace Lizard_game.ComponentPattern
         {
             base.Update();
         }
+
     }
 }

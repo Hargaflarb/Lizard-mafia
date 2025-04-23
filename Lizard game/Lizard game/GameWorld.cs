@@ -54,6 +54,12 @@ namespace Lizard_game
             gameObjectsToAdd = new List<GameObject>();
             gameObjectsToRemove = new List<GameObject>();
 
+            GameObject wallObject = new GameObject();
+            wallObject.AddComponent<SpriteRenderer>().SetSprite("butan");
+            wallObject.AddComponent<Collider>();
+            wallObject.AddComponent<Wall>();
+            AddObject(wallObject);
+
             //feel free to edit starting position
             PlayerObject = CreatePlayer(new Vector2(100, 100));
             InputHandler.AddHeldKeyBind(Keys.D, new MoveCommand((Player)PlayerObject.GetComponent<Player>(), new Vector2(1, 0)));
@@ -61,7 +67,7 @@ namespace Lizard_game
             InputHandler.AddHeldKeyBind(Keys.LeftShift, new SprintCommand((Player)PlayerObject.GetComponent<Player>()));
             InputHandler.AddClickedKeyBind(Keys.Space, new JumpCommand((Player)PlayerObject.GetComponent<Player>()));
             InputHandler.AddClickedKeyBind(Keys.R, new ResetCommand((Player)PlayerObject.GetComponent<Player>()));
-
+            
             base.Initialize();
         }
 
@@ -70,7 +76,7 @@ namespace Lizard_game
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Pixel = Content.Load<Texture2D>("Pixel");
 
-            foreach (var gameObject in activeGameObjects)
+            foreach (GameObject gameObject in activeGameObjects)
             {
                 gameObject.Start();
             }
@@ -98,20 +104,12 @@ namespace Lizard_game
                 gameObject.Update();
             }
 
-            foreach (GameObject gameObject in gameObjectsToAdd)
-            {
-                gameObject.Start();
-                activeGameObjects.Add(gameObject);
-            }
-            gameObjectsToAdd.Clear();
+            CheckCollision();
 
-            foreach (GameObject gameObject in gameObjectsToRemove)
-            {
-                activeGameObjects.Remove(gameObject);
-            }
-            gameObjectsToRemove.Clear();
 
             InputHandler.HandleInput();
+
+            CleanUpGameObjects();
             base.Update(gameTime);
         }
 
@@ -127,6 +125,21 @@ namespace Lizard_game
             gameObjectsToRemove.Add(gameObject);
         }
 
+        public void CleanUpGameObjects()
+        {
+            foreach (GameObject gameObject in gameObjectsToAdd)
+            {
+                activeGameObjects.Add(gameObject);
+            }
+            gameObjectsToAdd.Clear();
+
+            foreach (GameObject gameObject in gameObjectsToRemove)
+            {
+                activeGameObjects.Remove(gameObject);
+            }
+            gameObjectsToRemove.Clear();
+        }
+
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -139,6 +152,31 @@ namespace Lizard_game
             _spriteBatch.End();
             base.Draw(gameTime);
         }
+
+        protected void CheckCollision()
+        {
+            foreach (GameObject gameObject1 in activeGameObjects)
+            {
+                foreach (GameObject gameObject2 in activeGameObjects)
+                {
+                    if (gameObject1 == gameObject2)
+                    {
+                        continue;
+                    }
+
+                    Collider colider1 = (Collider)gameObject1.GetComponent<Collider>();
+                    Collider colider2 = (Collider)gameObject2.GetComponent<Collider>();
+
+
+                    if (colider1 is not null && colider2 is not null && colider1.IsColliding(colider2))
+                    {
+                        gameObject1.OnCollision(colider2);
+                        gameObject2.OnCollision(colider1);
+                    }
+                }
+            }
+        }
+
 
         private GameObject CreatePlayer(Vector2 position)
         {
