@@ -33,10 +33,10 @@ namespace Lizard_game.ComponentPattern
         {
             get
             {
-                return new Rectangle((int)GameObject.Transform.Position.X - spriteRenderer.Sprite.Width / 2,
-                    (int)GameObject.Transform.Position.Y - spriteRenderer.Sprite.Height / 2,
-                    spriteRenderer.Sprite.Width,
-                    spriteRenderer.Sprite.Height);
+                return new Rectangle((int)(GameObject.Transform.Position.X - spriteRenderer.ScaledWidth / 2),
+                    (int)(GameObject.Transform.Position.Y - spriteRenderer.ScaledHeight / 2),
+                    (int)spriteRenderer.ScaledWidth,
+                    (int)spriteRenderer.ScaledHeight);
             }
         }
 

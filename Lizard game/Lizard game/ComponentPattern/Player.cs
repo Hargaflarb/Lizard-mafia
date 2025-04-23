@@ -48,6 +48,8 @@ namespace Lizard_game.ComponentPattern
                 GameWorld.Instance.Graphics.PreferredBackBufferHeight - sr.Sprite.Height / 3 - 200);
 
             Speed = 300;
+            GameObject.Transform.Scale = 0.2f;
+            
 
         }
 
@@ -75,6 +77,12 @@ namespace Lizard_game.ComponentPattern
             {
                 ((Animator)GameWorld.Instance.PlayerObject.GetComponent<Animator>()).PlayAnimation("Idle");
             }
+        }
+
+        public override void OnCollision(Collider collider)
+        {
+            base.OnCollision(collider);
+            Speed = 0;
         }
     }
 }

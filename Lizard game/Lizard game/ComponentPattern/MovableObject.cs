@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,7 +9,7 @@ namespace Lizard_game.ComponentPattern
 {
     public class MovableObject : Wall
     {
-        public MovableObject(GameObject gameObject) : base(gameObject)
+        public MovableObject(GameObject gameObject, Vector2 position) : base(gameObject, position)
         {
         }
 

@@ -57,7 +57,7 @@ namespace Lizard_game
             GameObject wallObject = new GameObject();
             wallObject.AddComponent<SpriteRenderer>();
             wallObject.AddComponent<Collider>();
-            wallObject.AddComponent<Wall>();
+            wallObject.AddComponent<Wall>(new Vector2(2000, 700));
             AddObject(wallObject);
 
             //feel free to edit starting position
@@ -116,7 +116,6 @@ namespace Lizard_game
         public void AddObject(GameObject gameObject)
         {
             gameObject.Awake();
-            gameObject.Start();
 
             gameObjectsToAdd.Add(gameObject);
         }
@@ -130,6 +129,7 @@ namespace Lizard_game
         {
             foreach (GameObject gameObject in gameObjectsToAdd)
             {
+                gameObject.Start();
                 activeGameObjects.Add(gameObject);
             }
             gameObjectsToAdd.Clear();
