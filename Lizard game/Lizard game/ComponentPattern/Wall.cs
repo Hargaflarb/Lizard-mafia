@@ -19,6 +19,7 @@ namespace Lizard_game.ComponentPattern
         }
         public override void Start()
         {
+            ((SpriteRenderer)GameObject.GetComponent<SpriteRenderer>()).SetSprite("butan");
             base.Start();
         }
         public override void Update()

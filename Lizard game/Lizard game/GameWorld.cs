@@ -55,7 +55,7 @@ namespace Lizard_game
             gameObjectsToRemove = new List<GameObject>();
 
             GameObject wallObject = new GameObject();
-            wallObject.AddComponent<SpriteRenderer>().SetSprite("butan");
+            wallObject.AddComponent<SpriteRenderer>();
             wallObject.AddComponent<Collider>();
             wallObject.AddComponent<Wall>();
             AddObject(wallObject);
@@ -97,6 +97,7 @@ namespace Lizard_game
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            CleanUpGameObjects();
 
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             foreach (GameObject gameObject in activeGameObjects)
@@ -109,13 +110,13 @@ namespace Lizard_game
 
             InputHandler.HandleInput();
 
-            CleanUpGameObjects();
             base.Update(gameTime);
         }
 
         public void AddObject(GameObject gameObject)
         {
             gameObject.Awake();
+            gameObject.Start();
 
             gameObjectsToAdd.Add(gameObject);
         }
