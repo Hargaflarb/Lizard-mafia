@@ -52,13 +52,11 @@ namespace Lizard_game
             activeGameObjects = new List<GameObject>();
             gameObjectsToAdd = new List<GameObject>();
             gameObjectsToRemove = new List<GameObject>();
-            GameObject playerObject = new GameObject();
-            playerObject.AddComponent<Player>();
-            InputHandler.AddHeldKeyBind(Keys.D, new MoveCommand((Player)playerObject.GetComponent<Player>(), new Vector2(1, 0)));
-            InputHandler.AddHeldKeyBind(Keys.A, new MoveCommand((Player)playerObject.GetComponent<Player>(), new Vector2(-1, 0)));
-            InputHandler.AddHeldKeyBind(Keys.LeftShift, new SprintCommand((Player)playerObject.GetComponent<Player>()));
-            InputHandler.AddClickedKeyBind(Keys.Space, new JumpCommand((Player)playerObject.GetComponent<Player>()));
-            InputHandler.AddClickedKeyBind(Keys.R, new ResetCommand((Player)playerObject.GetComponent<Player>()));
+            InputHandler.AddHeldKeyBind(Keys.D, new MoveCommand((Player)Player.GetComponent<Player>(), new Vector2(1, 0)));
+            InputHandler.AddHeldKeyBind(Keys.A, new MoveCommand((Player)Player.GetComponent<Player>(), new Vector2(-1, 0)));
+            InputHandler.AddHeldKeyBind(Keys.LeftShift, new SprintCommand((Player)Player.GetComponent<Player>()));
+            InputHandler.AddClickedKeyBind(Keys.Space, new JumpCommand((Player)Player.GetComponent<Player>()));
+            InputHandler.AddClickedKeyBind(Keys.R, new ResetCommand((Player)Player.GetComponent<Player>()));
             base.Initialize();
         }
 
