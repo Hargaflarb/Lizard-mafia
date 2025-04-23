@@ -31,6 +31,15 @@ namespace Lizard_game.ComponentPattern
             Sprite = GameWorld.Instance.Content.Load<Texture2D>(spriteName);
         }
 
+        /// <summary>
+        /// Sets the sprite to a given gameObject
+        /// </summary>
+        /// <param name="spriteName"></param>
+        public void SetSprite(Texture2D sprite)
+        {
+            Sprite = sprite;
+        }
+
         public override void Start()
         {
             Origin = new Vector2(Sprite.Width / 2, Sprite.Height / 2);

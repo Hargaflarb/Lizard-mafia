@@ -9,7 +9,7 @@ namespace Lizard_game.ComponentPattern
 {
     public class GameObject
     {
-        private List<Component> components;
+        private List<Component> components=new List<Component>();
         private Transform transform;
 
         public Transform Transform { get; set; } = new Transform();
