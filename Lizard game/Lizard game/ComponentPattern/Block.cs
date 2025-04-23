@@ -9,8 +9,6 @@ namespace Lizard_game.ComponentPattern
 {
     public class Block : Component
     {
-        
-
         public Block(GameObject gameObject) : base(gameObject)
         {
 
