@@ -23,15 +23,17 @@ namespace Lizard_game.ComponentPattern
         #region Constructors
         public Animator(GameObject gameObject) : base(gameObject)
         {
+            spriteRenderer = (SpriteRenderer)gameObject.GetComponent<SpriteRenderer>();
         }
         #endregion
         #region Methods
         public void Animation(GameObject gameObject)
         {
-            spriteRenderer = (SpriteRenderer)gameObject.GetComponent<SpriteRenderer>();
+
         }
         public override void Awake()
         {
+            animations = new Dictionary<string, Animation>();
             base.Awake();
         }
 
@@ -40,7 +42,7 @@ namespace Lizard_game.ComponentPattern
             base.Start();
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update()
         {
             elapsedTime += GameWorld.Instance.DeltaTime;
             currentIndex = (int)(elapsedTime * currentAnimation.Fps);
@@ -49,7 +51,7 @@ namespace Lizard_game.ComponentPattern
                 elapsedTime = 0;
                 CurrentIndex = 0;
             }
-            spriteRenderer.Sprite=currentAnimation.Sprites[currentIndex];
+            spriteRenderer.Sprite = currentAnimation.Sprites[currentIndex];
         }
 
         public void AddAnimation(Animation animation)
@@ -57,12 +59,18 @@ namespace Lizard_game.ComponentPattern
             if (!animations.TryGetValue(animation.Name, out var anim))
             {
                 animations.Add(animation.Name, animation);
+                if (currentAnimation == null)
+                {
+                    currentAnimation = animation;
+                }
             }
         }
 
         public void PlayAnimation(string name)
         {
             currentAnimation = animations[name];
+            elapsedTime = 0;
+            currentIndex = 0;
         }
         #endregion
     }

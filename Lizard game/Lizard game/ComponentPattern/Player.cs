@@ -71,6 +71,10 @@ namespace Lizard_game.ComponentPattern
         {
             Move(velocity);
             Speed *= 0.98f;
+            if (Speed == 0)
+            {
+                ((Animator)GameWorld.Instance.PlayerObject.GetComponent<Animator>()).PlayAnimation("Idle");
+            }
         }
     }
 }
