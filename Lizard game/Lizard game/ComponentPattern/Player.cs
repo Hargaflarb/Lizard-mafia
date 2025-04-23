@@ -9,7 +9,7 @@ namespace Lizard_game.ComponentPattern
 {
     public class Player : Component
     {
-        public const float walkingSpeed = 1;
+        public const float walkingSpeed = 100;
         public const float runningSpeed = 3;
         public const float jumpSpeed = 40;
 
@@ -25,6 +25,7 @@ namespace Lizard_game.ComponentPattern
                 if (value < walkingSpeed)
                 {
                     speed = 0;
+                    velocity = Vector2.Zero;
                 }
                 speed = value;
             }
@@ -68,7 +69,8 @@ namespace Lizard_game.ComponentPattern
 
         public override void Update()
         {
-
+            Move(velocity);
+            Speed -= 1;
         }
     }
 }
