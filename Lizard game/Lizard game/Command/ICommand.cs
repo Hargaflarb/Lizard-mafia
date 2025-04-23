@@ -8,6 +8,9 @@ namespace Lizard_game.Command
 {
     public interface ICommand
     {
+        /// <summary>
+        /// Executes a command
+        /// </summary>
         void Execute();
     }
 }
