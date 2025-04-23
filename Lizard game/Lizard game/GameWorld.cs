@@ -55,13 +55,14 @@ namespace Lizard_game
             gameObjectsToRemove = new List<GameObject>();
 
             GameObject wallObject = new GameObject();
-            wallObject.AddComponent<SpriteRenderer>().SetSprite("");
+            wallObject.AddComponent<SpriteRenderer>().SetSprite("butan");
             wallObject.AddComponent<Collider>();
+            wallObject.AddComponent<Wall>();
+            AddObject(wallObject);
 
             GameObject playerObject = CreatePlayer(new Vector2(100, 100));
             InputHandler.AddHeldKeyBind(Keys.D, new MoveCommand((Player)playerObject.GetComponent<Player>(), new Vector2(1, 0)));
             InputHandler.AddHeldKeyBind(Keys.A, new MoveCommand((Player)playerObject.GetComponent<Player>(), new Vector2(-1, 0)));
-            InputHandler.AddHeldKeyBind(Keys.D, new MoveCommand((Player)playerObject.GetComponent<Player>(), new Vector2(1, 0)));
             InputHandler.AddHeldKeyBind(Keys.LeftShift, new SprintCommand((Player)playerObject.GetComponent<Player>()));
             InputHandler.AddClickedKeyBind(Keys.Space, new JumpCommand((Player)playerObject.GetComponent<Player>()));
             InputHandler.AddClickedKeyBind(Keys.R, new ResetCommand((Player)playerObject.GetComponent<Player>()));
