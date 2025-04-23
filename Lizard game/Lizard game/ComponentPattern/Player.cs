@@ -10,7 +10,7 @@ namespace Lizard_game.ComponentPattern
     public class Player : Component
     {
         public const float walkingSpeed = 100;
-        public const float runningSpeed = 3;
+        public const float runningSpeed = 300;
         public const float jumpSpeed = 40;
 
         private float speed;
@@ -68,7 +68,11 @@ namespace Lizard_game.ComponentPattern
         public override void Update()
         {
             Move(velocity);
-            Speed -= 1;
+            Speed *= 0.98f;
+            if (Speed == 0)
+            {
+                ((Animator)GameWorld.Instance.PlayerObject.GetComponent<Animator>()).PlayAnimation("Idle");
+            }
         }
     }
 }

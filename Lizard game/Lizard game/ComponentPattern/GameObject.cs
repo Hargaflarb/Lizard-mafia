@@ -75,11 +75,11 @@ namespace Lizard_game.ComponentPattern
             }
         }
 
-        public void OnCollision()
+        public void OnCollision(Collider collider)
         {
             foreach (var component in components)
             {
-                component.OnCollision();
+                component.OnCollision(collider);
             }
         }
 
