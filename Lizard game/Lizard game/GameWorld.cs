@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using Lizard_game.Command;
 using Lizard_game.ComponentPattern;
+using Lizard_game.Factory;
 
 
 namespace Lizard_game
@@ -52,12 +53,16 @@ namespace Lizard_game
             activeGameObjects = new List<GameObject>();
             gameObjectsToAdd = new List<GameObject>();
             gameObjectsToRemove = new List<GameObject>();
+            GameObject bugObject = BugFactory.Instance.CreateBug(new Vector2 (_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2));
+            AddObject(bugObject);
+
             GameObject playerObject = CreatePlayer(new Vector2(100, 100));
             InputHandler.AddHeldKeyBind(Keys.D, new MoveCommand((Player)playerObject.GetComponent<Player>(), new Vector2(1, 0)));
             InputHandler.AddHeldKeyBind(Keys.A, new MoveCommand((Player)playerObject.GetComponent<Player>(), new Vector2(-1, 0)));
             InputHandler.AddHeldKeyBind(Keys.LeftShift, new SprintCommand((Player)playerObject.GetComponent<Player>()));
             InputHandler.AddClickedKeyBind(Keys.Space, new JumpCommand((Player)playerObject.GetComponent<Player>()));
             InputHandler.AddClickedKeyBind(Keys.R, new ResetCommand((Player)playerObject.GetComponent<Player>()));
+            
             base.Initialize();
         }
 
@@ -66,10 +71,10 @@ namespace Lizard_game
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Pixel = Content.Load<Texture2D>("Pixel");
 
-            foreach (var gameObject in activeGameObjects)
-            {
-                gameObject.Start();
-            }
+            //foreach (var gameObject in activeGameObjects)
+            //{
+            //    gameObject.Start();
+            //}
             //feel free to edit starting position
 
             // TODO: use this.Content to load your game content here
@@ -87,7 +92,8 @@ namespace Lizard_game
             }
 
             foreach (GameObject gameObject in gameObjectsToAdd) 
-            { 
+            {
+                gameObject.Start();
                 activeGameObjects.Add(gameObject);
             }
             gameObjectsToAdd.Clear();
@@ -135,6 +141,7 @@ namespace Lizard_game
             Player.AddComponent<SpriteRenderer>();
             ((SpriteRenderer)Player.GetComponent<SpriteRenderer>()).SetSprite(Content.Load<Texture2D>("playerIdle"));
             Player.Transform.Position = position;
+            Player.Transform.Scale = 0.25f;
             AddObject(Player);
             return Player;
         }
