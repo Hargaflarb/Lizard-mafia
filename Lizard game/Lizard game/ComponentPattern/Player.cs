@@ -9,8 +9,8 @@ namespace Lizard_game.ComponentPattern
 {
     public class Player : Component
     {
-        public const float walkingSpeed = 1;
-        public const float runningSpeed = 3;
+        public const float walkingSpeed = 100;
+        public const float runningSpeed = 300;
         public const float jumpSpeed = 40;
 
         private float speed;
@@ -25,6 +25,7 @@ namespace Lizard_game.ComponentPattern
                 if (value < walkingSpeed)
                 {
                     speed = 0;
+                    velocity = Vector2.Zero;
                 }
                 speed = value;
             }
@@ -43,7 +44,6 @@ namespace Lizard_game.ComponentPattern
         public override void Start()
         {
             SpriteRenderer sr = GameObject.GetComponent<SpriteRenderer>() as SpriteRenderer;
-            sr.SetSprite("");
             GameObject.Transform.Position = new Vector2(GameWorld.Instance.Graphics.PreferredBackBufferWidth / 2,
                 GameWorld.Instance.Graphics.PreferredBackBufferHeight - sr.Sprite.Height / 3 - 200);
 
@@ -69,7 +69,8 @@ namespace Lizard_game.ComponentPattern
 
         public override void Update()
         {
-
+            Move(velocity);
+            Speed *= 0.98f;
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Lizard_game.Command
 
         public void Execute()
         {
-            player.Speed *= 1.2f;
+            player.Speed *= 1.04f;
             if (player.Speed > Player.runningSpeed)
             {
                 player.Speed = Player.runningSpeed;
