@@ -30,7 +30,6 @@ namespace Lizard_game.ComponentPattern
         {
             Sprite = GameWorld.Instance.Content.Load<Texture2D>(spriteName);
         }
-
         /// <summary>
         /// Sets the sprite to a given gameObject
         /// </summary>
