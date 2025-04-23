@@ -37,6 +37,7 @@ namespace Lizard_game.ComponentPattern
             speed = 0;
             velocity = Vector2.Zero;
             isHiding = false;
+
         }
 
         public override void Start()
@@ -45,7 +46,9 @@ namespace Lizard_game.ComponentPattern
             sr.SetSprite("");
             GameObject.Transform.Position = new Vector2(GameWorld.Instance.Graphics.PreferredBackBufferWidth / 2,
                 GameWorld.Instance.Graphics.PreferredBackBufferHeight - sr.Sprite.Height / 3 - 200);
+
             Speed = 300;
+
         }
 
         public void Move(Vector2 velocity)
@@ -62,6 +65,7 @@ namespace Lizard_game.ComponentPattern
         {
 
         }
+
 
         public override void Update()
         {
