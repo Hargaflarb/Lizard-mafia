@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using Lizard_game.Command;
 using Lizard_game.ComponentPattern;
+using Lizard_game.Factory;
 
 
 namespace Lizard_game
@@ -53,6 +54,8 @@ namespace Lizard_game
             activeGameObjects = new List<GameObject>();
             gameObjectsToAdd = new List<GameObject>();
             gameObjectsToRemove = new List<GameObject>();
+            GameObject bugObject = BugFactory.Instance.CreateBug(new Vector2 (_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2));
+            AddObject(bugObject);
 
             GameObject wallObject = new GameObject();
             wallObject.AddComponent<SpriteRenderer>().SetSprite("butan");
@@ -75,11 +78,6 @@ namespace Lizard_game
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Pixel = Content.Load<Texture2D>("Pixel");
-
-            foreach (GameObject gameObject in activeGameObjects)
-            {
-                gameObject.Start();
-            }
             //add animations to the player (made here to load the textures)
             Texture2D idleSprite = Content.Load<Texture2D>("playerIdle");
             ((Animator)PlayerObject.GetComponent<Animator>()).AddAnimation(new Animation("Idle", new Texture2D[] { idleSprite }, 1));
@@ -104,7 +102,14 @@ namespace Lizard_game
                 gameObject.Update();
             }
 
+            foreach (GameObject gameObject in gameObjectsToAdd) 
+            {
+                gameObject.Start();
+                activeGameObjects.Add(gameObject);
+            }
+            gameObjectsToAdd.Clear();
             CheckCollision();
+
 
 
             InputHandler.HandleInput();
