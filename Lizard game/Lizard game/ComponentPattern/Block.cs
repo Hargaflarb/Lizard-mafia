@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace Lizard_game.ComponentPattern
 {
     public class Block : Component
     {
-        private 
+        
 
         public Block(GameObject gameObject) : base(gameObject)
         {

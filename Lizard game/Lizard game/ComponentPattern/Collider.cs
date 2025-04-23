@@ -20,13 +20,6 @@ namespace Lizard_game.ComponentPattern
         public Collider(GameObject gameObject) : base(gameObject)
         {
         }
-
-        public override void Start()
-        {
-            spriteRenderer = GameObject.GetComponent<SpriteRenderer>() as SpriteRenderer;
-            pixel = GameWorld.Instance.Content.Load<Texture2D>("");
-        }
-
         public Rectangle CollisionBox
         {
             get
@@ -37,6 +30,13 @@ namespace Lizard_game.ComponentPattern
                     spriteRenderer.Sprite.Height);
             }
         }
+
+        public override void Start()
+        {
+            spriteRenderer = GameObject.GetComponent<SpriteRenderer>() as SpriteRenderer;
+            pixel = GameWorld.Instance.Content.Load<Texture2D>("");
+        }
+
 
         public override void Draw(SpriteBatch spriteBatch)
         {
