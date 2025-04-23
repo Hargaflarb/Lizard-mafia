@@ -52,7 +52,7 @@ namespace Lizard_game.ComponentPattern
 
         public override void Update()
         {
-            UpdatePixelCollider();
+            ///UpdatePixelCollider();
         }
 
         private void DrawRectangle(Rectangle collisionBox, SpriteBatch spriteBatch)
