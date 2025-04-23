@@ -14,6 +14,11 @@ namespace Lizard_game.ComponentPattern
 
         public Transform Transform { get; set; } = new Transform();
 
+        public GameObject()
+        {
+            components = new List<Component>();
+        }
+
         public T AddComponent<T>(params object[] additionalParameters) where T : Component 
         {
             Type componentType = typeof(T);
