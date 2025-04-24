@@ -186,6 +186,7 @@ namespace Lizard_game
             newPlayer.AddComponent<Collider>();
             newPlayer.AddComponent<SpriteRenderer>();
             newPlayer.AddComponent<Animator>();
+            newPlayer.AddComponent<Gravity>();
             newPlayer.Transform.Position = position;
             AddObject(newPlayer);
             return newPlayer;
