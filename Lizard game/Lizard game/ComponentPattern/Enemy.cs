@@ -9,13 +9,23 @@ namespace Lizard_game.ComponentPattern
 {
     public class Enemy : Component
     {
+        float speed;
+
+        
+
         public Enemy(GameObject gameObject) : base(gameObject)
         {
         }
 
+
         public void Move(Vector2 velocity)
         {
+            if (velocity != Vector2.Zero)
+            {
+                velocity.Normalize();
+            }
 
+            GameObject.Transform.Translate(velocity * speed * GameWorld.Instance.DeltaTime);
         }
     }
 }

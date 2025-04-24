@@ -57,6 +57,9 @@ namespace Lizard_game
             GameObject bugObject = BugFactory.Instance.CreateBug(new Vector2 (_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2));
             AddObject(bugObject);
 
+            GameObject enemyObject = EnemyFactory.Instance.CreateEnemy(new Vector2(1000, 1000));
+            AddObject(enemyObject);
+
             GameObject wallObject = new GameObject();
             wallObject.AddComponent<SpriteRenderer>();
             wallObject.AddComponent<Collider>();

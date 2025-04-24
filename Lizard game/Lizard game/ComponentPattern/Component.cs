@@ -13,6 +13,8 @@ namespace Lizard_game.ComponentPattern
         private GameObject gameObject;
         public GameObject GameObject { get => gameObject; private set => gameObject = value; }
 
+        public Vector2 Velocity { get => GameObject.Velocity; set => GameObject.Velocity = value; }
+
         public Component(GameObject gameObject)
         {
             this.GameObject = gameObject;

@@ -1,4 +1,5 @@
 ﻿using Lizard_game.ComponentPattern;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace Lizard_game.StatePatterns
         private Enemy parent;
         private Player player;
 
+        
+
         public void Enter(Enemy parent)
         {
             this.parent = parent;
@@ -20,12 +23,14 @@ namespace Lizard_game.StatePatterns
 
         public void Execute()
         {
-            throw new NotImplementedException();
+            parent.Move(parent.Velocity);
+            Vector2 playerPos = player.GameObject.Transform.Position;
+            Vector2 enemyPos = player.GameObject.Transform.Position;
         }
 
         public void Exit()
         {
-            throw new NotImplementedException();
+            
         }
     }
 }
