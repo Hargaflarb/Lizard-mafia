@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SharpDX.Direct2D1.Effects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,6 +15,14 @@ namespace Lizard_game.ComponentPattern
         private Texture2D sprite;
         private Vector2 origin;
         private Color color = Color.White;
+        private SpriteBatch spriteBatch;
+        private bool drawingLine=false;
+        private float distance;
+        private float angle;
+        private Texture2D lineTexture;
+        private Vector2 lineOrigin;
+        private Vector2 scale;
+        private Vector2 linestart;
 
         public Texture2D Sprite { get => sprite; set => sprite = value; }
         public Vector2 Origin { get => origin; set => origin = value; }
@@ -52,9 +62,28 @@ namespace Lizard_game.ComponentPattern
             }
         }
 
+        public void DrawLine(Texture2D lineTexture,Vector2 point1,Vector2 point2,float thickness=5f)
+        {
+            distance = Vector2.Distance(point1, point2);
+            angle = (float)Math.Atan2(point2.Y - point1.Y, point2.X - point1.X);
+            lineOrigin = new Vector2(0f, 0.5f);
+            scale = new Vector2(distance, thickness);
+            this.lineTexture = lineTexture;
+            linestart = point1;
+            drawingLine = true;
+        }
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(Sprite, GameObject.Transform.Position, null, Color, GameObject.Transform.Rotation, Origin, GameObject.Transform.Scale, SpriteEffects.None, 0);
+            if (drawingLine)
+            {
+                spriteBatch.Draw(lineTexture, linestart, null, Color.White, angle, lineOrigin, scale, SpriteEffects.None, 0);
+            }
+            //store spritebatch for later
+            if (this.spriteBatch == null)
+            {
+                this.spriteBatch = spriteBatch;
+            }
         }
     }
 }

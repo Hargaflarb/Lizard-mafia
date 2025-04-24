@@ -32,7 +32,7 @@ namespace Lizard_game.Command
 
         public void Execute()
         {
-
+            player.Tongue();
         }
     }
 }

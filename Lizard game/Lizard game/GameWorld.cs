@@ -62,6 +62,7 @@ namespace Lizard_game
             InputHandler.AddClickedKeyBind(Keys.LeftControl, new HideCommand((Player)PlayerObject.GetComponent<Player>()));
             InputHandler.AddClickedKeyBind(Keys.Space, new JumpCommand((Player)PlayerObject.GetComponent<Player>()));
             InputHandler.AddClickedKeyBind(Keys.R, new ResetCommand((Player)PlayerObject.GetComponent<Player>()));
+            InputHandler.AddClickedKeyBind(Keys.T, new TongueCommand((Player)PlayerObject.GetComponent<Player>()));
 
             base.Initialize();
         }
@@ -83,6 +84,7 @@ namespace Lizard_game
             {
                 walkAnim[i] = Content.Load<Texture2D>("playerWalk/walk anim frame " + (i + 1));
             }
+            ((Player)PlayerObject.GetComponent<Player>()).AddTexture(_spriteBatch);
             ((Animator)PlayerObject.GetComponent<Animator>()).AddAnimation(new Animation("Walk", walkAnim, 12));
             ((SpriteRenderer)PlayerObject.GetComponent<SpriteRenderer>()).SetSprite(idleSprite);
             // TODO: use this.Content to load your game content here

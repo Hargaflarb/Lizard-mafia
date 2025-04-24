@@ -1,10 +1,14 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.VisualBasic.Devices;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Mouse = Microsoft.Xna.Framework.Input.Mouse;
 
 namespace Lizard_game.ComponentPattern
 {
@@ -17,6 +21,7 @@ namespace Lizard_game.ComponentPattern
         private float speed;
         private Vector2 velocity;
         private bool isHiding;
+        private Texture2D tongueTexture;
 
         public float Speed
         {
@@ -46,10 +51,18 @@ namespace Lizard_game.ComponentPattern
         {
             SpriteRenderer sr = GameObject.GetComponent<SpriteRenderer>() as SpriteRenderer;
             GameObject.Transform.Position = new Vector2(GameWorld.Instance.Graphics.PreferredBackBufferWidth / 2,
-                GameWorld.Instance.Graphics.PreferredBackBufferHeight - sr.Sprite.Height / 3 - 200);
+            GameWorld.Instance.Graphics.PreferredBackBufferHeight - sr.Sprite.Height / 3 - 200);
 
             Speed = 300;
+        }
 
+        public void AddTexture(SpriteBatch spriteBatch)
+        {
+            if (tongueTexture == null)
+            {
+                tongueTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
+                tongueTexture.SetData(new[] { Color.Pink });
+            }
         }
 
         public void Move(Vector2 velocity)
@@ -65,7 +78,7 @@ namespace Lizard_game.ComponentPattern
             {
                 ((Animator)GameWorld.Instance.PlayerObject.GetComponent<Animator>()).PlayAnimation("Walk");
             }
-            else if (velocity == Vector2.Zero) 
+            else if (velocity == Vector2.Zero)
             {
                 ((Animator)GameWorld.Instance.PlayerObject.GetComponent<Animator>()).PlayAnimation("Idle");
             }
@@ -76,9 +89,20 @@ namespace Lizard_game.ComponentPattern
 
         }
 
+        public void Tongue()
+        {
+            //get player position
+            Vector2 point1 = new Vector2(GameWorld.Instance.PlayerObject.Transform.Position.X + ((SpriteRenderer)GameWorld.Instance.PlayerObject.GetComponent<SpriteRenderer>()).Sprite.Width / 2, GameWorld.Instance.PlayerObject.Transform.Position.Y);
+            //get mouse position
+            MouseState mouseState = Mouse.GetState();
+            Vector2 point2 = new Vector2(mouseState.Position.X, mouseState.Position.Y);
+            //get distance & angle
+            ((SpriteRenderer)GameWorld.Instance.PlayerObject.GetComponent<SpriteRenderer>()).DrawLine(tongueTexture, point1, point2);
+        }
 
         public override void Update()
         {
+            //makes the palyer seethrough & unable to move when hiding
             if (IsHiding)
             {
                 ((SpriteRenderer)GameWorld.Instance.PlayerObject.GetComponent<SpriteRenderer>()).Trasparancy(50);
