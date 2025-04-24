@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +10,14 @@ namespace Lizard_game.ComponentPattern
 {
     public class Wall : Component
     {
-        public Wall(GameObject gameObject) : base(gameObject)
+        public Wall(GameObject gameObject, Vector2 position) : base(gameObject)
         {
+            gameObject.Transform.Position = position;
         }
 
         public override void Awake()
         {
+            ((SpriteRenderer)GameObject.GetComponent<SpriteRenderer>()).SetSprite(GameWorld.Instance.Content.Load<Texture2D>("butan"));
             base.Awake();
         }
         public override void Start()

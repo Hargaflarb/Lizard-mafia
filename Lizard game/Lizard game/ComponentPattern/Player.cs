@@ -14,7 +14,6 @@ namespace Lizard_game.ComponentPattern
         public const float jumpSpeed = 40;
 
         private float speed;
-        private Vector2 velocity;
         private bool isHiding;
 
         public float Speed
@@ -25,19 +24,19 @@ namespace Lizard_game.ComponentPattern
                 if (value < walkingSpeed)
                 {
                     speed = 0;
-                    velocity = Vector2.Zero;
+                    Velocity = Vector2.Zero;
                 }
                 speed = value;
             }
         }
-        public Vector2 Velocity { get => velocity; set => velocity = value; }
+        public Vector2 Velocity { get => GameObject.Velocity; set => GameObject.Velocity = value; }
         public bool IsHiding { get => isHiding; set => isHiding = value; }
 
         public Player(GameObject gameObject) : base(gameObject)
         {
-            speed = 0;
-            velocity = Vector2.Zero;
-            isHiding = false;
+            Speed = 0;
+            Velocity = Vector2.Zero;
+            IsHiding = false;
 
         }
 
@@ -46,6 +45,8 @@ namespace Lizard_game.ComponentPattern
             SpriteRenderer sr = GameObject.GetComponent<SpriteRenderer>() as SpriteRenderer;
 
             Speed = 300;
+            GameObject.Transform.Scale = 0.2f;
+            
 
         }
 
@@ -67,12 +68,18 @@ namespace Lizard_game.ComponentPattern
 
         public override void Update()
         {
-            Move(velocity);
+            Move(Velocity);
             Speed *= 0.98f;
             if (Speed == 0)
             {
                 ((Animator)GameWorld.Instance.PlayerObject.GetComponent<Animator>()).PlayAnimation("Idle");
             }
+        }
+
+        public override void OnCollision(Collider collider)
+        {
+            base.OnCollision(collider);
+            Speed = 0;
         }
     }
 }

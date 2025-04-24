@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,13 @@ namespace Lizard_game.ComponentPattern
 {
     public class GameObject
     {
-        private List<Component> components=new List<Component>();
+        private List<Component> components = new List<Component>();
         private Transform transform;
+        private Vector2 velocity;
+
 
         public Transform Transform { get; set; } = new Transform();
+        public Vector2 Velocity { get => velocity; set => velocity = value; }
 
         public GameObject()
         {
