@@ -76,11 +76,11 @@ namespace Lizard_game.ComponentPattern
             //change animation based on movement
             if (velocity != Vector2.Zero && speed < runningSpeed)
             {
-                ((Animator)GameWorld.Instance.PlayerObject.GetComponent<Animator>()).PlayAnimation("Walk");
+                ((Animator)GameObject.GetComponent<Animator>()).PlayAnimation("Walk");
             }
             else if (velocity == Vector2.Zero)
             {
-                ((Animator)GameWorld.Instance.PlayerObject.GetComponent<Animator>()).PlayAnimation("Idle");
+                ((Animator)GameObject.GetComponent<Animator>()).PlayAnimation("Idle");
             }
         }
 
@@ -97,7 +97,7 @@ namespace Lizard_game.ComponentPattern
             MouseState mouseState = Mouse.GetState();
             Vector2 point2 = new Vector2(mouseState.Position.X, mouseState.Position.Y);
             //get distance & angle
-            ((SpriteRenderer)GameWorld.Instance.PlayerObject.GetComponent<SpriteRenderer>()).DrawLine(tongueTexture, point1, point2);
+            ((SpriteRenderer)GameObject.GetComponent<SpriteRenderer>()).DrawLine(tongueTexture, point1, point2);
         }
 
         public override void Update()
@@ -105,11 +105,11 @@ namespace Lizard_game.ComponentPattern
             //makes the palyer seethrough & unable to move when hiding
             if (IsHiding)
             {
-                ((SpriteRenderer)GameWorld.Instance.PlayerObject.GetComponent<SpriteRenderer>()).Trasparancy(50);
+                ((SpriteRenderer)GameObject.GetComponent<SpriteRenderer>()).Trasparancy(50);
             }
             else
             {
-                ((SpriteRenderer)GameWorld.Instance.PlayerObject.GetComponent<SpriteRenderer>()).Trasparancy(255);
+                ((SpriteRenderer)GameObject.GetComponent<SpriteRenderer>()).Trasparancy(255);
                 Move(velocity);
             }
             Speed *= 0.98f;
