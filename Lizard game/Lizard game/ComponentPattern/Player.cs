@@ -92,7 +92,7 @@ namespace Lizard_game.ComponentPattern
         public void Tongue()
         {
             //get player position
-            Vector2 point1 = new Vector2(GameWorld.Instance.PlayerObject.Transform.Position.X + ((SpriteRenderer)GameWorld.Instance.PlayerObject.GetComponent<SpriteRenderer>()).Sprite.Width / 2, GameWorld.Instance.PlayerObject.Transform.Position.Y);
+            Vector2 point1 = new Vector2(GameObject.Transform.Position.X + ((SpriteRenderer)GameObject.GetComponent<SpriteRenderer>()).Sprite.Width / 2, GameObject.Transform.Position.Y);
             //get mouse position
             MouseState mouseState = Mouse.GetState();
             Vector2 point2 = new Vector2(mouseState.Position.X, mouseState.Position.Y);
