@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 
 namespace Lizard_game.ComponentPattern
 {
     public class Gravity : Component
     {
-        private const float gravitation = 50;
+        private const float gravitation = 5;
         private bool touching = false;
-        private float verticalVelocity;
+        private Collider collider;
+
+        public bool Touching { get => touching; set => touching = value; }
 
         public Gravity(GameObject gameObject) : base(gameObject)
         {
@@ -21,16 +24,14 @@ namespace Lizard_game.ComponentPattern
 
         public override void Update()
         {
-            if (!touching)
+            if (!Touching)
             {
-                verticalVelocity += gravitation;
+                GameObject.YVelocity += gravitation;
             }
-            else
+            else if (collider.IsTouching((Collider)GameObject.GetComponent<Collider>()))
             {
-                verticalVelocity = 0;
-                touching = false;
+                Touching = false;
             }
-            //GameObject.Velocity += new Vector2(0, verticalVelocity);
         }
 
         public override void OnCollision(Collider collider)
@@ -42,12 +43,15 @@ namespace Lizard_game.ComponentPattern
                 //true if y value should be changed
                 if (Math.Abs(difference.X) < Math.Abs(difference.Y))
                 {
-                    touching = true;
+                    Touching = true;
+                    this.collider = collider;
                 }
 
             }
 
             base.OnCollision(collider);
         }
+
+
     }
 }

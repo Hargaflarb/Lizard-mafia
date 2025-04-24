@@ -59,11 +59,17 @@ namespace Lizard_game
             wallObject.AddComponent<Collider>();
             wallObject.AddComponent<Wall>(new Vector2(2000, 700));
             AddObject(wallObject);
+            GameObject wallObject2 = new GameObject();
+            wallObject2.AddComponent<SpriteRenderer>();
+            wallObject2.AddComponent<Collider>();
+            wallObject2.AddComponent<Wall>(new Vector2(1000, 1000));
+            AddObject(wallObject2);
+
 
             //feel free to edit starting position
             PlayerObject = CreatePlayer(new Vector2(100, 100));
-            InputHandler.AddHeldKeyBind(Keys.D, new MoveCommand((Player)PlayerObject.GetComponent<Player>(), new Vector2(1, 0)));
-            InputHandler.AddHeldKeyBind(Keys.A, new MoveCommand((Player)PlayerObject.GetComponent<Player>(), new Vector2(-1, 0)));
+            InputHandler.AddHeldKeyBind(Keys.D, new MoveCommand((Player)PlayerObject.GetComponent<Player>(), 1));
+            InputHandler.AddHeldKeyBind(Keys.A, new MoveCommand((Player)PlayerObject.GetComponent<Player>(), -1));
             InputHandler.AddHeldKeyBind(Keys.LeftShift, new SprintCommand((Player)PlayerObject.GetComponent<Player>()));
             InputHandler.AddClickedKeyBind(Keys.Space, new JumpCommand((Player)PlayerObject.GetComponent<Player>()));
             InputHandler.AddClickedKeyBind(Keys.R, new ResetCommand((Player)PlayerObject.GetComponent<Player>()));

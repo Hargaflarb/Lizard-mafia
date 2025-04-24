@@ -52,6 +52,7 @@ namespace Lizard_game.ComponentPattern
                 CurrentIndex = 0;
             }
             spriteRenderer.Sprite = currentAnimation.Sprites[currentIndex];
+            
         }
 
         public void AddAnimation(Animation animation)
@@ -71,6 +72,7 @@ namespace Lizard_game.ComponentPattern
             currentAnimation = animations[name];
             elapsedTime = 0;
             currentIndex = 0;
+            spriteRenderer.SetOrigin();
         }
         #endregion
     }

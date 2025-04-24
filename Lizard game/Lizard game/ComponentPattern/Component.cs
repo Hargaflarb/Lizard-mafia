@@ -12,6 +12,9 @@ namespace Lizard_game.ComponentPattern
     {
         private GameObject gameObject;
         public GameObject GameObject { get => gameObject; private set => gameObject = value; }
+        public Vector2 Velocity { get => GameObject.Velocity; set => GameObject.Velocity = value; }
+        public float XVelocity { get => GameObject.XVelocity; set => GameObject.XVelocity = value; }
+        public float YVelocity { get => GameObject.YVelocity; set => GameObject.YVelocity = value; }
 
         public Component(GameObject gameObject)
         {
@@ -37,6 +40,16 @@ namespace Lizard_game.ComponentPattern
                     //sets a new Y, based on wether it colliding from above or bellow.
                     newY = collider.GameObject.Transform.Position.Y + (difference.Y < 0 ? -targetDif : targetDif);
                     newX = GameObject.Transform.Position.X;
+
+                    //velocity reset is nesesary cus jump.
+                    if (difference.Y < 0 & YVelocity > 0)
+                    {
+                        YVelocity = 0;
+                    }
+                    if (difference.Y > 0 & YVelocity < 0)
+                    {
+                        YVelocity = 0;
+                    }
                 }
                 else //if x value should be changed
                 {
@@ -44,6 +57,7 @@ namespace Lizard_game.ComponentPattern
                     //sets a new X, based on wether it colliding from the right or left.
                     newX = collider.GameObject.Transform.Position.X + (difference.X < 0 ? -targetDif : targetDif);
                     newY = GameObject.Transform.Position.Y;
+
                 }
 
                 GameObject.Transform.Position = new Vector2(newX, newY);

@@ -17,6 +17,9 @@ namespace Lizard_game.ComponentPattern
 
         public Transform Transform { get; set; } = new Transform();
         public Vector2 Velocity { get => velocity; set => velocity = value; }
+        public float XVelocity { get => velocity.X; set => velocity = new Vector2(value, velocity.Y); }
+        public float YVelocity { get => velocity.Y; set => velocity = new Vector2(velocity.X, value); }
+
 
         public GameObject()
         {
