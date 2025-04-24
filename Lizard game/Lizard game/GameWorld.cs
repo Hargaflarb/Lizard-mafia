@@ -58,9 +58,9 @@ namespace Lizard_game
             AddObject(bugObject);
 
             GameObject wallObject = new GameObject();
-            wallObject.AddComponent<SpriteRenderer>().SetSprite("butan");
+            wallObject.AddComponent<SpriteRenderer>();
             wallObject.AddComponent<Collider>();
-            wallObject.AddComponent<Wall>();
+            wallObject.AddComponent<Wall>(new Vector2(2000, 700));
             AddObject(wallObject);
 
             //feel free to edit starting position
@@ -95,6 +95,7 @@ namespace Lizard_game
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            CleanUpGameObjects();
 
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             foreach (GameObject gameObject in activeGameObjects)
@@ -114,7 +115,6 @@ namespace Lizard_game
 
             InputHandler.HandleInput();
 
-            CleanUpGameObjects();
             base.Update(gameTime);
         }
 
@@ -134,6 +134,7 @@ namespace Lizard_game
         {
             foreach (GameObject gameObject in gameObjectsToAdd)
             {
+                gameObject.Start();
                 activeGameObjects.Add(gameObject);
             }
             gameObjectsToAdd.Clear();
@@ -190,6 +191,7 @@ namespace Lizard_game
             newPlayer.AddComponent<Collider>();
             newPlayer.AddComponent<SpriteRenderer>();
             newPlayer.AddComponent<Animator>();
+            newPlayer.AddComponent<Gravity>();
             newPlayer.Transform.Position = position;
             AddObject(newPlayer);
             return newPlayer;
