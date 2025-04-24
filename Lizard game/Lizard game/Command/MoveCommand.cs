@@ -27,10 +27,6 @@ namespace Lizard_game.Command
                 player.Speed = Player.walkingSpeed;
                 player.Velocity = velocity;
             }
-            if (player.Speed<=Player.walkingSpeed)
-            {
-                ((Animator)GameWorld.Instance.PlayerObject.GetComponent<Animator>()).PlayAnimation("Walk");
-            }
         }
     }
 }

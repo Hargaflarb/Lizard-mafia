@@ -12,11 +12,11 @@ namespace Lizard_game.ComponentPattern
     {
         private Texture2D sprite;
         private Vector2 origin;
-        private Color color;
+        private Color color = Color.White;
 
-        public Texture2D Sprite { get; set; }
-        public Vector2 Origin { get; set; }
-        public Color Color { get; set; } = Color.White;
+        public Texture2D Sprite { get => sprite; set => sprite = value; }
+        public Vector2 Origin { get => origin; set => origin = value; }
+        public Color Color { get => color; set => color = value; }
 
         public SpriteRenderer(GameObject gameObject) : base(gameObject)
         {
@@ -42,6 +42,14 @@ namespace Lizard_game.ComponentPattern
         public override void Start()
         {
             Origin = new Vector2(Sprite.Width / 2, Sprite.Height / 2);
+        }
+
+        public void Trasparancy(int value)
+        {
+            if (color.A != value)
+            {
+                color = new Color(color.R, color.G, color.B, value);
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)

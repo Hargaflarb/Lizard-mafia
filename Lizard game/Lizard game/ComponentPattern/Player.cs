@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -59,6 +60,15 @@ namespace Lizard_game.ComponentPattern
             }
             velocity *= Speed;
             GameObject.Transform.Translate(velocity * GameWorld.Instance.DeltaTime);
+            //change animation based on movement
+            if (velocity != Vector2.Zero && speed < runningSpeed)
+            {
+                ((Animator)GameWorld.Instance.PlayerObject.GetComponent<Animator>()).PlayAnimation("Walk");
+            }
+            else if (velocity == Vector2.Zero) 
+            {
+                ((Animator)GameWorld.Instance.PlayerObject.GetComponent<Animator>()).PlayAnimation("Idle");
+            }
         }
 
         public void Jump()
@@ -69,12 +79,16 @@ namespace Lizard_game.ComponentPattern
 
         public override void Update()
         {
-            Move(velocity);
-            Speed *= 0.98f;
-            if (Speed == 0)
+            if (IsHiding)
             {
-                ((Animator)GameWorld.Instance.PlayerObject.GetComponent<Animator>()).PlayAnimation("Idle");
+                ((SpriteRenderer)GameWorld.Instance.PlayerObject.GetComponent<SpriteRenderer>()).Trasparancy(50);
             }
+            else
+            {
+                ((SpriteRenderer)GameWorld.Instance.PlayerObject.GetComponent<SpriteRenderer>()).Trasparancy(255);
+                Move(velocity);
+            }
+            Speed *= 0.98f;
         }
     }
 }

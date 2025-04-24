@@ -59,18 +59,21 @@ namespace Lizard_game.ComponentPattern
             if (!animations.TryGetValue(animation.Name, out var anim))
             {
                 animations.Add(animation.Name, animation);
-                if (currentAnimation == null)
-                {
-                    currentAnimation = animation;
-                }
+            }
+            if (currentAnimation == null)
+            {
+                currentAnimation = animation;
             }
         }
 
         public void PlayAnimation(string name)
         {
-            currentAnimation = animations[name];
-            elapsedTime = 0;
-            currentIndex = 0;
+            if(currentAnimation!= animations[name])
+            {
+                currentAnimation = animations[name];
+                elapsedTime = 0;
+                currentIndex = 0;
+            }
         }
         #endregion
     }
