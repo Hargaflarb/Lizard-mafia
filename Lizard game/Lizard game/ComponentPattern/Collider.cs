@@ -13,7 +13,7 @@ namespace Lizard_game.ComponentPattern
     {
         private Texture2D pixel;
         private SpriteRenderer spriteRenderer;
-        private bool isDrawing;
+        private bool isDrawing = true;
         private List<RectangleData> pixelPerfectRectangles;
 
         public List<RectangleData> PixelPerfectRectangles { get => pixelPerfectRectangles; set => pixelPerfectRectangles = value; }

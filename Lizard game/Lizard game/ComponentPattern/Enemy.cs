@@ -12,6 +12,7 @@ namespace Lizard_game.ComponentPattern
     public class Enemy : Component
     {
         float speed = 300;
+        float timeSinceCollision;
         private IState<Enemy> currentState;
 
         
@@ -26,7 +27,6 @@ namespace Lizard_game.ComponentPattern
 
         public void Move(Vector2 velocity)
         {
-
             if (velocity != Vector2.Zero)
             {
                 velocity.Normalize();
@@ -37,9 +37,19 @@ namespace Lizard_game.ComponentPattern
 
         public override void Update()
         {
-            currentState.Execute();   
+            currentState.Execute();
+            timeSinceCollision += (float)GameWorld.Instance.DeltaTime;
+            if (timeSinceCollision >= 5)
+            {
+                speed = 300;
+                
+            }
         }
 
+        /// <summary>
+        /// Is mostly here to allow changing states, but as of writing there's only one state. May add more
+        /// </summary>
+        /// <param name="state"></param>
         public void ChangeState(IState<Enemy> state)
         {
             if (currentState != null)
@@ -48,6 +58,17 @@ namespace Lizard_game.ComponentPattern
             }
             currentState = state;
             currentState.Enter(this);
+        }
+
+        public override void OnCollision(Collider collider)
+        {
+            timeSinceCollision = 0;            
+            base.OnCollision(collider);
+            Player collidingObject = collider.GameObject.GetComponent<Player>() as Player;
+            
+           
+            collidingObject.TakeDamage();
+            speed = 0;
         }
     }
 }
