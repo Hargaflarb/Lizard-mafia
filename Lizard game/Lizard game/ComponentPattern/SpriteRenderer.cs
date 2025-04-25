@@ -50,6 +50,11 @@ namespace Lizard_game.ComponentPattern
 
         public override void Start()
         {
+            SetOrigin();
+        }
+
+        public void SetOrigin()
+        {
             Origin = new Vector2(Sprite.Width / 2, Sprite.Height / 2);
         }
 

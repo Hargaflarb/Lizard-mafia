@@ -11,7 +11,7 @@ namespace Lizard_game.ComponentPattern
     {
         public const float walkingSpeed = 100;
         public const float runningSpeed = 300;
-        public const float jumpSpeed = 40;
+        public const float jumpSpeed = 400;
 
         private float speed;
         private bool isHiding;
@@ -24,12 +24,11 @@ namespace Lizard_game.ComponentPattern
                 if (value < walkingSpeed)
                 {
                     speed = 0;
-                    Velocity = Vector2.Zero;
+                    XVelocity = 0;
                 }
                 speed = value;
             }
         }
-        public Vector2 Velocity { get => GameObject.Velocity; set => GameObject.Velocity = value; }
         public bool IsHiding { get => isHiding; set => isHiding = value; }
 
         public Player(GameObject gameObject) : base(gameObject)
@@ -48,29 +47,36 @@ namespace Lizard_game.ComponentPattern
 
             Speed = 300;
             GameObject.Transform.Scale = 0.2f;
-            
+
 
         }
 
-        public void Move(Vector2 velocity)
+        public void Move()
         {
-            if (velocity != Vector2.Zero)
+            float xVelocity = 0;
+            if (XVelocity != 0)
             {
-                velocity.Normalize();
+                xVelocity = (XVelocity < 0 ? -1 : 1);
             }
-            velocity *= Speed;
+
+            xVelocity *= Speed;
+
+            Vector2 velocity = new Vector2(xVelocity, YVelocity);
             GameObject.Transform.Translate(velocity * GameWorld.Instance.DeltaTime);
         }
 
         public void Jump()
         {
-
+            if ((bool)((Gravity)GameObject.GetComponent<Gravity>())?.TouchingGround)
+            {
+                YVelocity = -jumpSpeed;
+            }
         }
 
 
         public override void Update()
         {
-            Move(Velocity);
+            Move();
             Speed *= 0.98f;
             if (Speed == 0)
             {
