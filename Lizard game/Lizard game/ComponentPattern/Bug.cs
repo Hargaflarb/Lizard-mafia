@@ -7,13 +7,18 @@ using System.Threading.Tasks;
 
 namespace Lizard_game.ComponentPattern
 {
-    public class Block : Component
+    public class Bug : Component
     {
-        
 
-        public Block(GameObject gameObject) : base(gameObject)
+        public Bug(GameObject gameObject) : base(gameObject)
         {
-
+            
         }
+
+        public override void Start()
+        {
+            base.Start();
+        }
+
     }
 }

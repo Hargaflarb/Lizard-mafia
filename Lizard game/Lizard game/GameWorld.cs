@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using Lizard_game.Command;
 using Lizard_game.ComponentPattern;
+using Lizard_game.Factory;
 
 
 namespace Lizard_game
@@ -53,6 +54,14 @@ namespace Lizard_game
             activeGameObjects = new List<GameObject>();
             gameObjectsToAdd = new List<GameObject>();
             gameObjectsToRemove = new List<GameObject>();
+            GameObject bugObject = BugFactory.Instance.CreateBug(new Vector2 (_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2));
+            AddObject(bugObject);
+
+            GameObject wallObject = new GameObject();
+            wallObject.AddComponent<SpriteRenderer>();
+            wallObject.AddComponent<Collider>();
+            wallObject.AddComponent<Wall>(new Vector2(2000, 700));
+            AddObject(wallObject);
 
             //feel free to edit starting position
             PlayerObject = CreatePlayer(new Vector2(100, 100));
@@ -71,11 +80,6 @@ namespace Lizard_game
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Pixel = Content.Load<Texture2D>("Pixel");
-
-            foreach (var gameObject in activeGameObjects)
-            {
-                gameObject.Start();
-            }
             //add animations to the player (made here to load the textures)
             Texture2D idleSprite = Content.Load<Texture2D>("playerIdle");
             ((Animator)PlayerObject.GetComponent<Animator>()).AddAnimation(new Animation("Idle", new Texture2D[] { idleSprite }, 1));
@@ -94,6 +98,7 @@ namespace Lizard_game
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            CleanUpGameObjects();
 
             DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             foreach (GameObject gameObject in activeGameObjects)
@@ -101,20 +106,18 @@ namespace Lizard_game
                 gameObject.Update();
             }
 
-            foreach (GameObject gameObject in gameObjectsToAdd)
+            foreach (GameObject gameObject in gameObjectsToAdd) 
             {
                 gameObject.Start();
                 activeGameObjects.Add(gameObject);
             }
             gameObjectsToAdd.Clear();
+            CheckCollision();
 
-            foreach (GameObject gameObject in gameObjectsToRemove)
-            {
-                activeGameObjects.Remove(gameObject);
-            }
-            gameObjectsToRemove.Clear();
+
 
             InputHandler.HandleInput();
+
             base.Update(gameTime);
         }
 
@@ -130,6 +133,22 @@ namespace Lizard_game
             gameObjectsToRemove.Add(gameObject);
         }
 
+        public void CleanUpGameObjects()
+        {
+            foreach (GameObject gameObject in gameObjectsToAdd)
+            {
+                gameObject.Start();
+                activeGameObjects.Add(gameObject);
+            }
+            gameObjectsToAdd.Clear();
+
+            foreach (GameObject gameObject in gameObjectsToRemove)
+            {
+                activeGameObjects.Remove(gameObject);
+            }
+            gameObjectsToRemove.Clear();
+        }
+
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -143,6 +162,31 @@ namespace Lizard_game
             base.Draw(gameTime);
         }
 
+        protected void CheckCollision()
+        {
+            foreach (GameObject gameObject1 in activeGameObjects)
+            {
+                foreach (GameObject gameObject2 in activeGameObjects)
+                {
+                    if (gameObject1 == gameObject2)
+                    {
+                        continue;
+                    }
+
+                    Collider colider1 = (Collider)gameObject1.GetComponent<Collider>();
+                    Collider colider2 = (Collider)gameObject2.GetComponent<Collider>();
+
+
+                    if (colider1 is not null && colider2 is not null && colider1.IsColliding(colider2))
+                    {
+                        gameObject1.OnCollision(colider2);
+                        gameObject2.OnCollision(colider1);
+                    }
+                }
+            }
+        }
+
+
         private GameObject CreatePlayer(Vector2 position)
         {
             GameObject newPlayer = new GameObject();
@@ -150,6 +194,7 @@ namespace Lizard_game
             newPlayer.AddComponent<Collider>();
             newPlayer.AddComponent<SpriteRenderer>();
             newPlayer.AddComponent<Animator>();
+            newPlayer.AddComponent<Gravity>();
             newPlayer.Transform.Position = position;
             AddObject(newPlayer);
             return newPlayer;

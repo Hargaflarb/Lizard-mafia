@@ -27,6 +27,15 @@ namespace Lizard_game.ComponentPattern
         public Texture2D Sprite { get => sprite; set => sprite = value; }
         public Vector2 Origin { get => origin; set => origin = value; }
         public Color Color { get => color; set => color = value; }
+        
+        public float ScaledWidth
+        {
+            get => Sprite.Width * GameObject.Transform.Scale;
+        }
+        public float ScaledHeight
+        {
+            get => Sprite.Height * GameObject.Transform.Scale;
+        }
 
         public SpriteRenderer(GameObject gameObject) : base(gameObject)
         {

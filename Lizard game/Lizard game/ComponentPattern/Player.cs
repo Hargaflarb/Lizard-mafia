@@ -19,7 +19,6 @@ namespace Lizard_game.ComponentPattern
         public const float jumpSpeed = 40;
 
         private float speed;
-        private Vector2 velocity;
         private bool isHiding;
         private GameObject tongue;
         private Texture2D tongueTexture;
@@ -32,19 +31,19 @@ namespace Lizard_game.ComponentPattern
                 if (value < walkingSpeed)
                 {
                     speed = 0;
-                    velocity = Vector2.Zero;
+                    Velocity = Vector2.Zero;
                 }
                 speed = value;
             }
         }
-        public Vector2 Velocity { get => velocity; set => velocity = value; }
+        public Vector2 Velocity { get => GameObject.Velocity; set => GameObject.Velocity = value; }
         public bool IsHiding { get => isHiding; set => isHiding = value; }
 
         public Player(GameObject gameObject) : base(gameObject)
         {
-            speed = 0;
-            velocity = Vector2.Zero;
-            isHiding = false;
+            Speed = 0;
+            Velocity = Vector2.Zero;
+            IsHiding = false;
 
         }
 
@@ -56,6 +55,9 @@ namespace Lizard_game.ComponentPattern
 
             Speed = 300;
             CreateTongue();
+
+            GameObject.Transform.Scale = 0.2f;
+
         }
 
         
@@ -91,7 +93,7 @@ namespace Lizard_game.ComponentPattern
 
         public override void Update()
         {
-            //makes the palyer seethrough & unable to move when hiding
+            //makes the player seethrough & unable to move when hiding
             if (IsHiding)
             {
                 ((SpriteRenderer)GameObject.GetComponent<SpriteRenderer>()).Trasparancy(50);
@@ -110,6 +112,12 @@ namespace Lizard_game.ComponentPattern
             newObject.AddComponent<Collider>();
             newObject.AddComponent<SpriteRenderer>();
             tongue = newObject;
+        }
+
+        public override void OnCollision(Collider collider)
+        {
+            base.OnCollision(collider);
+            Speed = 0;
         }
     }
 }
