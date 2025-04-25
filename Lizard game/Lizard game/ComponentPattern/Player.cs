@@ -21,6 +21,7 @@ namespace Lizard_game.ComponentPattern
         private float speed;
         private Vector2 velocity;
         private bool isHiding;
+        private GameObject tongue;
         private Texture2D tongueTexture;
 
         public float Speed
@@ -54,16 +55,10 @@ namespace Lizard_game.ComponentPattern
             GameWorld.Instance.Graphics.PreferredBackBufferHeight - sr.Sprite.Height / 3 - 200);
 
             Speed = 300;
+            CreateTongue();
         }
 
-        public void AddTexture(SpriteBatch spriteBatch)
-        {
-            if (tongueTexture == null)
-            {
-                tongueTexture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
-                tongueTexture.SetData(new[] { Color.Pink });
-            }
-        }
+        
 
         public void Move(Vector2 velocity)
         {
@@ -91,13 +86,7 @@ namespace Lizard_game.ComponentPattern
 
         public void Tongue()
         {
-            //get player position
-            Vector2 point1 = new Vector2(GameObject.Transform.Position.X + ((SpriteRenderer)GameObject.GetComponent<SpriteRenderer>()).Sprite.Width / 2, GameObject.Transform.Position.Y);
-            //get mouse position
-            MouseState mouseState = Mouse.GetState();
-            Vector2 point2 = new Vector2(mouseState.Position.X, mouseState.Position.Y);
-            //get distance & angle
-            ((SpriteRenderer)GameObject.GetComponent<SpriteRenderer>()).DrawLine(tongueTexture, point1, point2);
+            ((Tongue)tongue.GetComponent<Tongue>()).Use();
         }
 
         public override void Update()
@@ -113,6 +102,14 @@ namespace Lizard_game.ComponentPattern
                 Move(velocity);
             }
             Speed *= 0.98f;
+        }
+        private void CreateTongue()
+        {
+            GameObject newObject = new GameObject();
+            newObject.AddComponent<Tongue>();
+            newObject.AddComponent<Collider>();
+            newObject.AddComponent<SpriteRenderer>();
+            tongue = newObject;
         }
     }
 }
