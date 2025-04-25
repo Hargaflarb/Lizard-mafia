@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using Lizard_game.Command;
 using Lizard_game.ComponentPattern;
+using Lizard_game.Factory;
+using PathFinding;
 
 
 namespace Lizard_game
@@ -17,9 +19,11 @@ namespace Lizard_game
         private List<GameObject> activeGameObjects;
         private List<GameObject> gameObjectsToAdd;
         private List<GameObject> gameObjectsToRemove;
+        private Graph graph = new Graph();
 
         public float DeltaTime { get; set; }
         public GraphicsDeviceManager Graphics { get { return _graphics; } }
+        public Graph Graph { get; set; }
 
         public Texture2D Pixel;
 
@@ -50,9 +54,24 @@ namespace Lizard_game
             _graphics.PreferredBackBufferWidth = 1920;
             _graphics.ApplyChanges();
 
+            
+
+            for (int x = 0; x < 20; x++)
+            {
+                for (int y = 0; y < 20; y++)
+                {
+                    graph.AddNode(x, y);
+                }
+            }
+
             activeGameObjects = new List<GameObject>();
             gameObjectsToAdd = new List<GameObject>();
             gameObjectsToRemove = new List<GameObject>();
+            GameObject bugObject = BugFactory.Instance.CreateBug(new Vector2 (_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2));
+            AddObject(bugObject);
+
+            GameObject enemyObject = EnemyFactory.Instance.CreateEnemy(new Vector2(1000, 1000));
+            AddObject(enemyObject);
 
             GameObject wallObject = new GameObject();
             wallObject.AddComponent<SpriteRenderer>();
@@ -71,7 +90,7 @@ namespace Lizard_game
             AddObject(wallObject3);
 
             //feel free to edit starting position
-            PlayerObject = CreatePlayer(new Vector2(100, 100));
+            PlayerObject = CreatePlayer(new Vector2(1000, 500));
             InputHandler.AddHeldKeyBind(Keys.D, new MoveCommand((Player)PlayerObject.GetComponent<Player>(), 1));
             InputHandler.AddHeldKeyBind(Keys.A, new MoveCommand((Player)PlayerObject.GetComponent<Player>(), -1));
             InputHandler.AddHeldKeyBind(Keys.LeftShift, new SprintCommand((Player)PlayerObject.GetComponent<Player>()));
@@ -85,11 +104,6 @@ namespace Lizard_game
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Pixel = Content.Load<Texture2D>("Pixel");
-
-            foreach (GameObject gameObject in activeGameObjects)
-            {
-                gameObject.Start();
-            }
             //add animations to the player (made here to load the textures)
             Texture2D idleSprite = Content.Load<Texture2D>("playerIdle");
             ((Animator)PlayerObject.GetComponent<Animator>()).AddAnimation(new Animation("Idle", new Texture2D[] { idleSprite }, 1));
@@ -115,7 +129,14 @@ namespace Lizard_game
                 gameObject.Update();
             }
 
+            foreach (GameObject gameObject in gameObjectsToAdd) 
+            {
+                gameObject.Start();
+                activeGameObjects.Add(gameObject);
+            }
+            gameObjectsToAdd.Clear();
             CheckCollision();
+
 
 
             InputHandler.HandleInput();

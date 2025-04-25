@@ -42,8 +42,6 @@ namespace Lizard_game.ComponentPattern
         public override void Start()
         {
             SpriteRenderer sr = GameObject.GetComponent<SpriteRenderer>() as SpriteRenderer;
-            GameObject.Transform.Position = new Vector2(GameWorld.Instance.Graphics.PreferredBackBufferWidth / 2,
-                GameWorld.Instance.Graphics.PreferredBackBufferHeight - sr.Sprite.Height / 3 - 200);
 
             Speed = 300;
             GameObject.Transform.Scale = 0.2f;
