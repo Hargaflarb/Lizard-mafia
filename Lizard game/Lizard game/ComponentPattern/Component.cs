@@ -16,8 +16,6 @@ namespace Lizard_game.ComponentPattern
         public float XVelocity { get => GameObject.XVelocity; set => GameObject.XVelocity = value; }
         public float YVelocity { get => GameObject.YVelocity; set => GameObject.YVelocity = value; }
 
-        public Vector2 Velocity { get => GameObject.Velocity; set => GameObject.Velocity = value; }
-
         public Component(GameObject gameObject)
         {
             this.GameObject = gameObject;

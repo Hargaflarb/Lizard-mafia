@@ -90,7 +90,7 @@ namespace Lizard_game
             AddObject(wallObject3);
 
             //feel free to edit starting position
-            PlayerObject = CreatePlayer(new Vector2(100, 100));
+            PlayerObject = CreatePlayer(new Vector2(1000, 500));
             InputHandler.AddHeldKeyBind(Keys.D, new MoveCommand((Player)PlayerObject.GetComponent<Player>(), 1));
             InputHandler.AddHeldKeyBind(Keys.A, new MoveCommand((Player)PlayerObject.GetComponent<Player>(), -1));
             InputHandler.AddHeldKeyBind(Keys.LeftShift, new SprintCommand((Player)PlayerObject.GetComponent<Player>()));
