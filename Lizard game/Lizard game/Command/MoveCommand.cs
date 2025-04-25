@@ -12,12 +12,12 @@ namespace Lizard_game.Command
     public class MoveCommand : ICommand
     {
         private Player player;
-        private Vector2 velocity;
+        private float horisontalVelocity;
 
-        public MoveCommand(Player player, Vector2 velocity)
+        public MoveCommand(Player player, float velocity)
         {
             this.player = player;
-            this.velocity = velocity;
+            horisontalVelocity = velocity;
         }
 
         public void Execute()
@@ -25,7 +25,7 @@ namespace Lizard_game.Command
             if (player.Speed < Player.walkingSpeed)
             {
                 player.Speed = Player.walkingSpeed;
-                player.Velocity = velocity;
+                player.XVelocity = horisontalVelocity;
             }
             if (player.Speed <= Player.walkingSpeed)
             {

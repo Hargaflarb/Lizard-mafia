@@ -13,7 +13,7 @@ namespace Lizard_game.ComponentPattern
     {
         private Texture2D pixel;
         private SpriteRenderer spriteRenderer;
-        private bool isDrawing;
+        private bool isDrawing = true;
         private List<RectangleData> pixelPerfectRectangles;
 
         public List<RectangleData> PixelPerfectRectangles { get => pixelPerfectRectangles; set => pixelPerfectRectangles = value; }
@@ -147,9 +147,21 @@ namespace Lizard_game.ComponentPattern
         /// </summary>
         /// <param name="colider">other collider</param>
         /// <returns>wether or not the two are colliding</returns>
-        public bool IsColliding(Collider colider)
+        public bool IsColliding(Collider collider)
         {
-            return CollisionBox.Intersects(colider.CollisionBox);
+            return CollisionBox.Intersects(collider.CollisionBox);
+        }
+
+        /// <summary>
+        /// Determinse wether or not this and another collider are touching
+        /// </summary>
+        /// <param name="colider">other collider</param>
+        /// <returns></returns>
+        public bool IsTouching(Collider collider)
+        {
+            CollisionBox.Deconstruct(out int x1, out int y1, out int w1, out int h1);
+            collider.CollisionBox.Deconstruct(out int x2, out int y2, out int w2, out int h2);
+            return (x1 <= x2 + w2 & x1 + w1 >= x2) & (y1 <= y2 + h2 & y2 + h1 >= y2);
         }
 
     }
