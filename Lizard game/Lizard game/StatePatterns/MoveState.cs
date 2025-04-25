@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PathFinding;
 
 namespace Lizard_game.StatePatterns
 {
@@ -12,6 +13,9 @@ namespace Lizard_game.StatePatterns
     {
         private Enemy parent;
         private Player player;
+        private bool foundPlayer;
+        
+        
 
         
 
@@ -25,7 +29,9 @@ namespace Lizard_game.StatePatterns
         {
             parent.Move(parent.Velocity);
             Vector2 playerPos = player.GameObject.Transform.Position;
-            Vector2 enemyPos = player.GameObject.Transform.Position;
+            Vector2 enemyPos = parent.GameObject.Transform.Position;
+
+            GameWorld.Instance.Graph.AStar(((int)enemyPos.X, (int)enemyPos.Y), ((int)playerPos.X, (int)playerPos.Y), out foundPlayer);
         }
 
         public void Exit()

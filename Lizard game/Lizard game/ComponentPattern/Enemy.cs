@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PathFinding;
 
 namespace Lizard_game.ComponentPattern
 {
@@ -11,6 +12,7 @@ namespace Lizard_game.ComponentPattern
     {
         float speed;
 
+        
         
 
         public Enemy(GameObject gameObject) : base(gameObject)
@@ -20,6 +22,7 @@ namespace Lizard_game.ComponentPattern
 
         public void Move(Vector2 velocity)
         {
+
             if (velocity != Vector2.Zero)
             {
                 velocity.Normalize();
