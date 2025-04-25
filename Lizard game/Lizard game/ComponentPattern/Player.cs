@@ -29,7 +29,6 @@ namespace Lizard_game.ComponentPattern
                 speed = value;
             }
         }
-        public Vector2 Velocity { get => GameObject.Velocity; set => GameObject.Velocity = value; }
         public bool IsHiding { get => isHiding; set => isHiding = value; }
 
         public Player(GameObject gameObject) : base(gameObject)
