@@ -23,7 +23,9 @@ namespace Lizard_game.ComponentPattern
 
         public virtual void Awake() { }
         public virtual void Start() { }
-        public virtual void Update() { }
+        public virtual void Update()
+        {
+        }
         public virtual void Draw(SpriteBatch spriteBatch) { }
         public virtual void OnCollision(Collider collider)
         {
@@ -33,6 +35,7 @@ namespace Lizard_game.ComponentPattern
                 Collider thisCollider = (Collider)GameObject.GetComponent<Collider>();
                 float newX;
                 float newY;
+                
                 //true if y value should be changed
                 if (Math.Abs(difference.X) < Math.Abs(difference.Y))
                 {

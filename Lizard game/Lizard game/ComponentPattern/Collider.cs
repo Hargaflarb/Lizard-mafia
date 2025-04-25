@@ -26,17 +26,27 @@ namespace Lizard_game.ComponentPattern
         {
             spriteRenderer = GameObject.GetComponent<SpriteRenderer>() as SpriteRenderer;
             pixel = GameWorld.Instance.Pixel;
-            PixelPerfectRectangles=new List<RectangleData>();
+            PixelPerfectRectangles = new List<RectangleData>();
         }
 
         public Rectangle CollisionBox
         {
             get
             {
-                return new Rectangle((int)(GameObject.Transform.Position.X - spriteRenderer.ScaledWidth / 2),
-                    (int)(GameObject.Transform.Position.Y - spriteRenderer.ScaledHeight / 2),
-                    (int)spriteRenderer.ScaledWidth,
-                    (int)spriteRenderer.ScaledHeight);
+                if (spriteRenderer.DoSizeRender)
+                {
+                    return new Rectangle((int)(GameObject.Transform.Position.X - GameObject.Transform.Size.X / 2),
+                        (int)(GameObject.Transform.Position.Y - GameObject.Transform.Size.Y / 2),
+                        (int)GameObject.Transform.Size.X,
+                        (int)GameObject.Transform.Size.Y);
+                }
+                else
+                {
+                    return new Rectangle((int)(GameObject.Transform.Position.X - spriteRenderer.ScaledWidth / 2),
+                        (int)(GameObject.Transform.Position.Y - spriteRenderer.ScaledHeight / 2),
+                        (int)spriteRenderer.ScaledWidth,
+                        (int)spriteRenderer.ScaledHeight);
+                }
             }
         }
 
@@ -63,11 +73,13 @@ namespace Lizard_game.ComponentPattern
             Rectangle bottomLine = new Rectangle(collisionBox.X, collisionBox.Y + collisionBox.Height, collisionBox.Width, 1);
             Rectangle rightLine = new Rectangle(collisionBox.X + collisionBox.Width, collisionBox.Y, 1, collisionBox.Height);
             Rectangle leftLine = new Rectangle(collisionBox.X, collisionBox.Y, 1, collisionBox.Height);
+            Rectangle center = new Rectangle((int)GameObject.Transform.Position.X - 1, (int)GameObject.Transform.Position.Y - 1, 3, 3);
 
             spriteBatch.Draw(pixel, topLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
             spriteBatch.Draw(pixel, bottomLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
             spriteBatch.Draw(pixel, rightLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
             spriteBatch.Draw(pixel, leftLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
+            spriteBatch.Draw(pixel, center, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
         }
 
         private void UpdatePixelCollider()
@@ -182,7 +194,7 @@ namespace Lizard_game.ComponentPattern
             this.X = x;
             this.Y = y;
         }
-        
+
         public void UpdatePosition(GameObject gameObject, int width, int height)
         {
             Rectangle = new Rectangle((int)gameObject.Transform.Position.X + X - width / 2,

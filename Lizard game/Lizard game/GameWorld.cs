@@ -73,11 +73,7 @@ namespace Lizard_game
             GameObject enemyObject = EnemyFactory.Instance.CreateEnemy(new Vector2(1000, 1000));
             AddObject(enemyObject);
 
-            GameObject wallObject = new GameObject();
-            wallObject.AddComponent<SpriteRenderer>();
-            wallObject.AddComponent<Collider>();
-            wallObject.AddComponent<Wall>(new Vector2(2000, 700));
-            AddObject(wallObject);
+            AddObject(WallFactory.Instance.CreateWall(new Rectangle(10,700,1000,50)));
             GameObject wallObject2 = new GameObject();
             wallObject2.AddComponent<SpriteRenderer>();
             wallObject2.AddComponent<Collider>();
@@ -86,7 +82,7 @@ namespace Lizard_game
             GameObject wallObject3 = new GameObject();
             wallObject3.AddComponent<SpriteRenderer>();
             wallObject3.AddComponent<Collider>();
-            wallObject3.AddComponent<Wall>(new Vector2(1000, 300));
+            wallObject3.AddComponent<Wall>(new Vector2(1000, 100));
             AddObject(wallObject3);
 
             //feel free to edit starting position
@@ -129,15 +125,17 @@ namespace Lizard_game
                 gameObject.Update();
             }
 
-            foreach (GameObject gameObject in gameObjectsToAdd) 
-            {
-                gameObject.Start();
-                activeGameObjects.Add(gameObject);
-            }
-            gameObjectsToAdd.Clear();
             CheckCollision();
 
 
+
+
+
+
+            foreach (GameObject gameObject in activeGameObjects)
+            {
+                gameObject.Transform.LastPosition = gameObject.Transform.Position;
+            }
 
             InputHandler.HandleInput();
 
