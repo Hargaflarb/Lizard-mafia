@@ -67,7 +67,7 @@ namespace Lizard_game.ComponentPattern
 
         public void Jump()
         {
-            if ((bool)((Gravity)GameObject.GetComponent<Gravity>())?.Touching)
+            if ((bool)((Gravity)GameObject.GetComponent<Gravity>())?.TouchingGround)
             {
                 YVelocity = -jumpSpeed;
             }

@@ -14,7 +14,7 @@ namespace Lizard_game.ComponentPattern
         private bool touching = false;
         private Collider collider;
 
-        public bool Touching { get => touching; set => touching = value; }
+        public bool TouchingGround { get => touching; set => touching = value; }
 
         public Gravity(GameObject gameObject) : base(gameObject)
         {
@@ -24,13 +24,13 @@ namespace Lizard_game.ComponentPattern
 
         public override void Update()
         {
-            if (!Touching)
+            if (!TouchingGround)
             {
                 GameObject.YVelocity += gravitation;
             }
-            else if (collider.IsTouching((Collider)GameObject.GetComponent<Collider>()))
+            else if (!collider.IsTouching((Collider)GameObject.GetComponent<Collider>()))
             {
-                Touching = false;
+                TouchingGround = false;
             }
         }
 
@@ -43,8 +43,11 @@ namespace Lizard_game.ComponentPattern
                 //true if y value should be changed
                 if (Math.Abs(difference.X) < Math.Abs(difference.Y))
                 {
-                    Touching = true;
-                    this.collider = collider;
+                    if (difference.Y < 0)
+                    {
+                        TouchingGround = true;
+                        this.collider = collider;
+                    }
                 }
 
             }

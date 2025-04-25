@@ -64,7 +64,11 @@ namespace Lizard_game
             wallObject2.AddComponent<Collider>();
             wallObject2.AddComponent<Wall>(new Vector2(1000, 1000));
             AddObject(wallObject2);
-
+            GameObject wallObject3 = new GameObject();
+            wallObject3.AddComponent<SpriteRenderer>();
+            wallObject3.AddComponent<Collider>();
+            wallObject3.AddComponent<Wall>(new Vector2(1000, 300));
+            AddObject(wallObject3);
 
             //feel free to edit starting position
             PlayerObject = CreatePlayer(new Vector2(100, 100));
