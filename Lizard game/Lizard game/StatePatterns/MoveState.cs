@@ -27,9 +27,13 @@ namespace Lizard_game.StatePatterns
 
         public void Execute()
         {
-            parent.Move(parent.Velocity);
             Vector2 playerPos = player.GameObject.Transform.Position;
             Vector2 enemyPos = parent.GameObject.Transform.Position;
+
+            Vector2 direction = playerPos - enemyPos;
+            direction.Normalize();
+            parent.Move(direction);
+
 
             //GameWorld.Instance.Graph.AStar(((int)enemyPos.X, (int)enemyPos.Y), ((int)playerPos.X, (int)playerPos.Y), out foundPlayer);
         }

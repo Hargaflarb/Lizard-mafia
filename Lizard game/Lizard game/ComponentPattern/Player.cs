@@ -16,6 +16,8 @@ namespace Lizard_game.ComponentPattern
         private float speed;
         private bool isHiding;
         private bool isWalking;
+        private int health;
+        private float invincibility;
 
         public float Speed
         {
@@ -34,6 +36,7 @@ namespace Lizard_game.ComponentPattern
 
         public Player(GameObject gameObject) : base(gameObject)
         {
+            health = 2;
             Speed = 0;
             Velocity = Vector2.Zero;
             IsHiding = false;
@@ -115,6 +118,7 @@ namespace Lizard_game.ComponentPattern
             {
                 SetPlayerAnimation("Walk");
             }
+            invincibility -= (float)GameWorld.Instance.DeltaTime;
         }
 
         public void Sprint()
@@ -129,6 +133,18 @@ namespace Lizard_game.ComponentPattern
             }
         }
 
-
+        public void TakeDamage()
+        {
+            if (invincibility <= 0)
+            {
+                health--;
+                invincibility = 5;
+            }
+            if (health <= 0)
+            {
+                GameWorld.Instance.RemoveObject(GameWorld.Instance.PlayerObject);
+                GameWorld.Instance.IsAlive = false;
+            }
+        }
     }
 }

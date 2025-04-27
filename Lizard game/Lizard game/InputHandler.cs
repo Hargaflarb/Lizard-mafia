@@ -67,5 +67,11 @@ namespace Lizard_game
 
             lastKeyboardState = keyState;
         }
+
+        public static void Reset()
+        {
+            heldKeyBinds.Clear();
+            clickedKeyBinds.Clear();
+        }
     }
 }

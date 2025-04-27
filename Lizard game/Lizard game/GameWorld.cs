@@ -20,12 +20,13 @@ namespace Lizard_game
         private List<GameObject> gameObjectsToAdd;
         private List<GameObject> gameObjectsToRemove;
         //private Graph graph = new Graph();
+        private bool isAlive = true;
 
 
         public GameObject PlayerObject { get; private set; }
         public float DeltaTime { get => deltaTime; set => deltaTime = value; }
         public GraphicsDeviceManager Graphics { get { return _graphics; } }
-        //public Graph Graph { get; set; }
+
 
         public Texture2D Pixel;
 
@@ -40,6 +41,7 @@ namespace Lizard_game
                 return instance;
             }
         }
+        public bool IsAlive { get => isAlive; set => isAlive = value; }
 
         private GameWorld()
         {
@@ -51,10 +53,10 @@ namespace Lizard_game
 
         protected override void Initialize()
         {
+            IsAlive = true;
             _graphics.PreferredBackBufferHeight = 1080;
             _graphics.PreferredBackBufferWidth = 1920;
             _graphics.ApplyChanges();
-
 
 
             for (int x = 0; x < 20; x++)
@@ -64,12 +66,17 @@ namespace Lizard_game
                     //graph.AddNode(x, y);
                 }
             }
+            
+            InputHandler.Reset();
 
             activeGameObjects = new List<GameObject>();
             gameObjectsToAdd = new List<GameObject>();
             gameObjectsToRemove = new List<GameObject>();
+            
             GameObject bugObject = BugFactory.Instance.CreateBug(new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2));
             AddObject(bugObject);
+
+            //feel free to edit starting position
 
             GameObject enemyObject = EnemyFactory.Instance.CreateEnemy(new Vector2(1000, 1000));
             AddObject(enemyObject);
@@ -121,6 +128,12 @@ namespace Lizard_game
             CheckCollision();
 
             InputHandler.HandleInput();
+
+            if (IsAlive == false)
+            {
+                GameOver();
+                Initialize();
+            }
 
             base.Update(gameTime);
         }
@@ -190,6 +203,10 @@ namespace Lizard_game
             }
         }
 
+        public void GameOver()
+        {
+            activeGameObjects.Clear();
+        }
 
         private GameObject CreatePlayer(Vector2 position)
         {
