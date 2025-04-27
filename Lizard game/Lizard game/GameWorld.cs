@@ -73,11 +73,11 @@ namespace Lizard_game
             //feel free to edit starting position
             PlayerObject = CreatePlayer(new Vector2(1000, 500));
 
-            GameObject bugObject = BugFactory.Instance.CreateBug(new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2));
+            GameObject bugObject = BugFactory.Instance.CreateBug(new Vector2(600, 300));
             AddObject(bugObject);
 
             //feel free to edit starting position
-            GameObject enemyObject = EnemyFactory.Instance.CreateEnemy(new Vector2(1000, 1000));
+            GameObject enemyObject = EnemyFactory.Instance.CreateEnemy(new Vector2(100, 700));
             AddObject(enemyObject);
 
             InputHandler.AddHeldKeyBind(Keys.D, new MoveCommand(PlayerObject.GetComponent<Player>(), 1));

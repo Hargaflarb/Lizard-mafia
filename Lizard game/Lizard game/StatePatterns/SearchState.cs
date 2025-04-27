@@ -12,7 +12,7 @@ namespace Lizard_game.StatePatterns
 {
     public class SearchState : IState<Enemy>
     {
-        public const int discoveryDisatnace = 200;
+        public const int discoveryDisatnace = 600;
         private Enemy parent;
         private Player player;
 

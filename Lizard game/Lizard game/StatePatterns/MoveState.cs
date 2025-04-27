@@ -5,13 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-//using PathFinding;
 
 namespace Lizard_game.StatePatterns
 {
     public class MoveState : IState<Enemy>
     {
-        public const int trackingDisatnace = 500;
+        public const int trackingDisatnace = 700;
         private Enemy parent;
         private Player player;
 
