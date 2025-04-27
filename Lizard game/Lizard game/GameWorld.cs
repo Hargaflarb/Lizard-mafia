@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using Lizard_game.Command;
 using Lizard_game.ComponentPattern;
 using Lizard_game.Factory;
-//using PathFinding;
 
 
 namespace Lizard_game
@@ -19,11 +18,11 @@ namespace Lizard_game
         private List<GameObject> activeGameObjects;
         private List<GameObject> gameObjectsToAdd;
         private List<GameObject> gameObjectsToRemove;
-        //private Graph graph = new Graph();
+        private GameObject playerObject;
         private bool isAlive = true;
 
 
-        public GameObject PlayerObject { get; private set; }
+        public GameObject PlayerObject { get => playerObject; private set => playerObject = value; }
         public float DeltaTime { get => deltaTime; set => deltaTime = value; }
         public GraphicsDeviceManager Graphics { get { return _graphics; } }
 
@@ -57,36 +56,27 @@ namespace Lizard_game
             _graphics.PreferredBackBufferHeight = 1080;
             _graphics.PreferredBackBufferWidth = 1920;
             _graphics.ApplyChanges();
-
-
-            for (int x = 0; x < 20; x++)
-            {
-                for (int y = 0; y < 20; y++)
-                {
-                    //graph.AddNode(x, y);
-                }
-            }
-            
             InputHandler.Reset();
+            
 
             activeGameObjects = new List<GameObject>();
             gameObjectsToAdd = new List<GameObject>();
             gameObjectsToRemove = new List<GameObject>();
             
-            GameObject bugObject = BugFactory.Instance.CreateBug(new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2));
-            AddObject(bugObject);
-
-            //feel free to edit starting position
-
-            GameObject enemyObject = EnemyFactory.Instance.CreateEnemy(new Vector2(1000, 1000));
-            AddObject(enemyObject);
-
             AddObject(WallFactory.Instance.CreateWall(new Rectangle(200, 900, 1000, 50)));
             AddObject(WallFactory.Instance.CreateWall(new Rectangle(800, 800, 800, 400)));
             AddObject(WallFactory.Instance.CreateWall(new Rectangle(200, 800, 200, 100)));
 
             //feel free to edit starting position
             PlayerObject = CreatePlayer(new Vector2(1000, 500));
+
+            GameObject bugObject = BugFactory.Instance.CreateBug(new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2));
+            AddObject(bugObject);
+
+            //feel free to edit starting position
+            GameObject enemyObject = EnemyFactory.Instance.CreateEnemy(new Vector2(1000, 1000));
+            AddObject(enemyObject);
+
             InputHandler.AddHeldKeyBind(Keys.D, new MoveCommand(PlayerObject.GetComponent<Player>(), 1));
             InputHandler.AddHeldKeyBind(Keys.A, new MoveCommand(PlayerObject.GetComponent<Player>(), -1));
             InputHandler.AddHeldKeyBind(Keys.LeftShift, new SprintCommand(PlayerObject.GetComponent<Player>()));
@@ -190,8 +180,8 @@ namespace Lizard_game
                         continue;
                     }
 
-                    Collider colider1 = (Collider)gameObject1.GetComponent<Collider>();
-                    Collider colider2 = (Collider)gameObject2.GetComponent<Collider>();
+                    Collider colider1 = gameObject1.GetComponent<Collider>();
+                    Collider colider2 = gameObject2.GetComponent<Collider>();
 
 
                     if (colider1 is not null && colider2 is not null && colider1.IsColliding(colider2))

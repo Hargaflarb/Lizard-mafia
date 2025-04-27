@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PathFinding;
 using Lizard_game.StatePatterns;
 
 namespace Lizard_game.ComponentPattern
@@ -15,8 +14,8 @@ namespace Lizard_game.ComponentPattern
         float timeSinceCollision;
         private IState<Enemy> currentState;
 
-        
-        
+
+
 
         public Enemy(GameObject gameObject) : base(gameObject)
         {
@@ -42,7 +41,7 @@ namespace Lizard_game.ComponentPattern
             if (timeSinceCollision >= 5)
             {
                 speed = 300;
-                
+
             }
         }
 
@@ -62,13 +61,15 @@ namespace Lizard_game.ComponentPattern
 
         public override void OnCollision(Collider collider)
         {
-            timeSinceCollision = 0;            
             base.OnCollision(collider);
-            Player collidingObject = collider.GameObject.GetComponent<Player>() as Player;
-            
-           
-            collidingObject.TakeDamage();
-            speed = 0;
+
+            Player collidingObject;
+            if ((collidingObject = collider.GameObject.GetComponent<Player>()) is not null)
+            {
+                collidingObject.TakeDamage();
+                timeSinceCollision = 0;
+                speed = 0;
+            }
         }
     }
 }
