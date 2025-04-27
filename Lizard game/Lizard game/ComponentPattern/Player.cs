@@ -45,7 +45,6 @@ namespace Lizard_game.ComponentPattern
             GameObject.Transform.Scale = 0.2f;
         }
 
-
         public override void Update()
         {
             Move();
