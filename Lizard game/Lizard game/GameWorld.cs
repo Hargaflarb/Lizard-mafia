@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Lizard_game.Command;
 using Lizard_game.ComponentPattern;
 using Lizard_game.Factory;
-using PathFinding;
+//using PathFinding;
 
 
 namespace Lizard_game
@@ -19,10 +19,14 @@ namespace Lizard_game
         private List<GameObject> activeGameObjects;
         private List<GameObject> gameObjectsToAdd;
         private List<GameObject> gameObjectsToRemove;
+        //private Graph graph = new Graph();
         private bool isAlive = true;
 
-        public float DeltaTime { get; set; }
+
+        public GameObject PlayerObject { get; private set; }
+        public float DeltaTime { get => deltaTime; set => deltaTime = value; }
         public GraphicsDeviceManager Graphics { get { return _graphics; } }
+
 
         public Texture2D Pixel;
 
@@ -46,7 +50,6 @@ namespace Lizard_game
             IsMouseVisible = true;
         }
 
-        public GameObject PlayerObject { get; private set; }
 
         protected override void Initialize()
         {
@@ -55,19 +58,22 @@ namespace Lizard_game
             _graphics.PreferredBackBufferWidth = 1920;
             _graphics.ApplyChanges();
 
+
+            for (int x = 0; x < 20; x++)
+            {
+                for (int y = 0; y < 20; y++)
+                {
+                    //graph.AddNode(x, y);
+                }
+            }
+            
             InputHandler.Reset();
 
             activeGameObjects = new List<GameObject>();
             gameObjectsToAdd = new List<GameObject>();
             gameObjectsToRemove = new List<GameObject>();
-            PlayerObject = CreatePlayer(new Vector2(100, 100));
-            InputHandler.AddHeldKeyBind(Keys.D, new MoveCommand((Player)PlayerObject.GetComponent<Player>(), new Vector2(1, 0)));
-            InputHandler.AddHeldKeyBind(Keys.A, new MoveCommand((Player)PlayerObject.GetComponent<Player>(), new Vector2(-1, 0)));
-            InputHandler.AddHeldKeyBind(Keys.LeftShift, new SprintCommand((Player)PlayerObject.GetComponent<Player>()));
-            InputHandler.AddClickedKeyBind(Keys.Space, new JumpCommand((Player)PlayerObject.GetComponent<Player>()));
-            InputHandler.AddClickedKeyBind(Keys.R, new ResetCommand((Player)PlayerObject.GetComponent<Player>()));
-
-            GameObject bugObject = BugFactory.Instance.CreateBug(new Vector2 (_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2));
+            
+            GameObject bugObject = BugFactory.Instance.CreateBug(new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2));
             AddObject(bugObject);
 
             //feel free to edit starting position
@@ -75,22 +81,18 @@ namespace Lizard_game
             GameObject enemyObject = EnemyFactory.Instance.CreateEnemy(new Vector2(1000, 1000));
             AddObject(enemyObject);
 
-            GameObject wallObject = new GameObject();
-            wallObject.AddComponent<SpriteRenderer>();
-            wallObject.AddComponent<Collider>();
-            wallObject.AddComponent<Wall>(new Vector2(2000, 700));
-            AddObject(wallObject);
-            GameObject wallObject2 = new GameObject();
-            wallObject2.AddComponent<SpriteRenderer>();
-            wallObject2.AddComponent<Collider>();
-            wallObject2.AddComponent<Wall>(new Vector2(1000, 1000));
-            AddObject(wallObject2);
-            GameObject wallObject3 = new GameObject();
-            wallObject3.AddComponent<SpriteRenderer>();
-            wallObject3.AddComponent<Collider>();
-            wallObject3.AddComponent<Wall>(new Vector2(1000, 300));
-            AddObject(wallObject3):
-            
+            AddObject(WallFactory.Instance.CreateWall(new Rectangle(200, 900, 1000, 50)));
+            AddObject(WallFactory.Instance.CreateWall(new Rectangle(800, 800, 800, 400)));
+            AddObject(WallFactory.Instance.CreateWall(new Rectangle(200, 800, 200, 100)));
+
+            //feel free to edit starting position
+            PlayerObject = CreatePlayer(new Vector2(1000, 500));
+            InputHandler.AddHeldKeyBind(Keys.D, new MoveCommand(PlayerObject.GetComponent<Player>(), 1));
+            InputHandler.AddHeldKeyBind(Keys.A, new MoveCommand(PlayerObject.GetComponent<Player>(), -1));
+            InputHandler.AddHeldKeyBind(Keys.LeftShift, new SprintCommand(PlayerObject.GetComponent<Player>()));
+            InputHandler.AddClickedKeyBind(Keys.Space, new JumpCommand(PlayerObject.GetComponent<Player>()));
+            InputHandler.AddClickedKeyBind(Keys.R, new ResetCommand(PlayerObject.GetComponent<Player>()));
+
             base.Initialize();
         }
 
@@ -123,15 +125,7 @@ namespace Lizard_game
                 gameObject.Update();
             }
 
-            foreach (GameObject gameObject in gameObjectsToAdd) 
-            {
-                gameObject.Start();
-                activeGameObjects.Add(gameObject);
-            }
-            gameObjectsToAdd.Clear();
             CheckCollision();
-
-
 
             InputHandler.HandleInput();
 
@@ -219,9 +213,9 @@ namespace Lizard_game
             GameObject newPlayer = new GameObject();
             newPlayer.AddComponent<Player>();
             newPlayer.AddComponent<Collider>();
+            newPlayer.AddComponent<Gravity>();
             newPlayer.AddComponent<SpriteRenderer>();
             newPlayer.AddComponent<Animator>();
-            newPlayer.AddComponent<Gravity>();
             newPlayer.Transform.Position = position;
             AddObject(newPlayer);
             return newPlayer;

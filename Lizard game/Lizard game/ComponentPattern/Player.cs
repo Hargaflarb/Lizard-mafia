@@ -10,11 +10,12 @@ namespace Lizard_game.ComponentPattern
     public class Player : Component
     {
         public const float walkingSpeed = 100;
-        public const float runningSpeed = 300;
-        public const float jumpSpeed = 400;
+        public const float runningSpeed = 400;
+        public const float jumpSpeed = 250;
 
         private float speed;
         private bool isHiding;
+        private bool isWalking;
         private int health;
         private float invincibility;
 
@@ -39,17 +40,37 @@ namespace Lizard_game.ComponentPattern
             Speed = 0;
             Velocity = Vector2.Zero;
             IsHiding = false;
-
+            isWalking = false;
         }
 
         public override void Start()
         {
-            SpriteRenderer sr = GameObject.GetComponent<SpriteRenderer>() as SpriteRenderer;
-
-            Speed = 300;
             GameObject.Transform.Scale = 0.2f;
+        }
 
+        public override void Update()
+        {
+            Move();
 
+            if ((bool)GameObject.GetComponent<Gravity>()?.TouchingGround)
+            {
+                Speed -= runningSpeed * 0.01f;
+            }
+
+            if (Speed == 0)
+            {
+                SetPlayerAnimation("Idle");
+            }
+        }
+
+        public override void OnCollision(Collider collider)
+        {
+            base.OnCollision(collider);
+        }
+
+        public void SetPlayerAnimation(string animationName)
+        {
+            GameWorld.Instance.PlayerObject.GetComponent<Animator>().PlayAnimation(animationName);
         }
 
         public void Move()
@@ -68,28 +89,48 @@ namespace Lizard_game.ComponentPattern
 
         public void Jump()
         {
-            if ((bool)((Gravity)GameObject.GetComponent<Gravity>())?.TouchingGround)
+            if ((bool)GameObject.GetComponent<Gravity>()?.TouchingGround)
             {
                 YVelocity = -jumpSpeed;
             }
         }
 
-
-        public override void Update()
+        public void Walk(int horisontalVelocity)
         {
-            Move();
-            Speed *= 0.98f;
-            if (Speed == 0)
+            isWalking = true;
+            if (Speed < walkingSpeed)
             {
-                ((Animator)GameWorld.Instance.PlayerObject.GetComponent<Animator>()).PlayAnimation("Idle");
+                Speed = walkingSpeed;
+            }
+
+            //if both are either positiv or negativ
+            if ((XVelocity <= 0 & horisontalVelocity <= 0) | (XVelocity >= 0 & horisontalVelocity >= 0))
+            {
+                XVelocity = horisontalVelocity;
+            }
+            else
+            {
+                Speed -= runningSpeed * 0.01f;
+            }
+
+
+            if (Speed <= walkingSpeed)
+            {
+                SetPlayerAnimation("Walk");
             }
             invincibility -= (float)GameWorld.Instance.DeltaTime;
         }
 
-        public override void OnCollision(Collider collider)
+        public void Sprint()
         {
-            base.OnCollision(collider);
-            Speed = 0;
+            if ((bool)GameObject.GetComponent<Gravity>()?.TouchingGround & isWalking)
+            {
+                Speed += runningSpeed * 0.04f;
+                if (Speed > runningSpeed)
+                {
+                    Speed = runningSpeed;
+                }
+            }
         }
 
         public void TakeDamage()

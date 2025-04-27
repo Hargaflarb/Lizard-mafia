@@ -28,7 +28,7 @@ namespace Lizard_game.ComponentPattern
             {
                 GameObject.YVelocity += gravitation;
             }
-            else if (!collider.IsTouching((Collider)GameObject.GetComponent<Collider>()))
+            else if (!((Collider)GameObject.GetComponent<Collider>()).IsTouchingTopOf(collider))
             {
                 TouchingGround = false;
             }
@@ -38,21 +38,16 @@ namespace Lizard_game.ComponentPattern
         {
             if (collider.GameObject.GetComponent<Wall>() is not null)
             {
-                Vector2 difference = GameObject.Transform.Position - collider.GameObject.Transform.Position;
-
+                Collider thisCollider = (Collider)GameObject.GetComponent<Collider>();
+                
                 //true if y value should be changed
-                if (Math.Abs(difference.X) < Math.Abs(difference.Y))
+                if (thisCollider.IsTouchingTopOf(collider))
                 {
-                    if (difference.Y < 0)
-                    {
-                        TouchingGround = true;
-                        this.collider = collider;
-                    }
+                    TouchingGround = true;
+                    this.collider = collider;
                 }
 
             }
-
-            base.OnCollision(collider);
         }
 
 

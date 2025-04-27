@@ -17,6 +17,26 @@ namespace Lizard_game.ComponentPattern
         private List<RectangleData> pixelPerfectRectangles;
 
         public List<RectangleData> PixelPerfectRectangles { get => pixelPerfectRectangles; set => pixelPerfectRectangles = value; }
+        public Rectangle CollisionBox
+        {
+            get
+            {
+                if (spriteRenderer.DoSizeRender)
+                {
+                    return new Rectangle((int)(GameObject.Transform.Position.X - GameObject.Transform.Size.X / 2f),
+                        (int)(GameObject.Transform.Position.Y - GameObject.Transform.Size.Y / 2f),
+                        (int)GameObject.Transform.Size.X,
+                        (int)GameObject.Transform.Size.Y);
+                }
+                else
+                {
+                    return new Rectangle((int)MathF.Round(GameObject.Transform.Position.X - spriteRenderer.ScaledWidth / 2f),
+                        (int)MathF.Round(GameObject.Transform.Position.Y - spriteRenderer.ScaledHeight / 2f),
+                        (int)spriteRenderer.ScaledWidth,
+                        (int)spriteRenderer.ScaledHeight);
+                }
+            }
+        }
 
         public Collider(GameObject gameObject) : base(gameObject)
         {
@@ -26,18 +46,7 @@ namespace Lizard_game.ComponentPattern
         {
             spriteRenderer = GameObject.GetComponent<SpriteRenderer>() as SpriteRenderer;
             pixel = GameWorld.Instance.Pixel;
-            PixelPerfectRectangles=new List<RectangleData>();
-        }
-
-        public Rectangle CollisionBox
-        {
-            get
-            {
-                return new Rectangle((int)(GameObject.Transform.Position.X - spriteRenderer.ScaledWidth / 2),
-                    (int)(GameObject.Transform.Position.Y - spriteRenderer.ScaledHeight / 2),
-                    (int)spriteRenderer.ScaledWidth,
-                    (int)spriteRenderer.ScaledHeight);
-            }
+            PixelPerfectRectangles = new List<RectangleData>();
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -57,17 +66,83 @@ namespace Lizard_game.ComponentPattern
             ///UpdatePixelCollider();
         }
 
+        public override void OnCollision(Collider collider)
+        {
+            if (collider.GameObject.GetComponent<Wall>() is not null & GameObject.GetComponent<Wall>() is null)
+            {
+                float newX = GameObject.Transform.Position.X;
+                float newY = GameObject.Transform.Position.Y;
+
+                CollisionBox.Deconstruct(out int x, out int y, out int w, out int h);
+                collider.CollisionBox.Deconstruct(out int x2, out int y2, out int w2, out int h2);
+                
+                int leftDif = (x) - (x2 + w2);
+                int rightDif = (x + w) - (x2);
+                int upperDif = (y) - (y2 + h2);
+                int lowerDif = (y + h) - (y2);
+
+                // findes the collision handle that has the smallest effect
+                int xDif = GetLowerAbsoluteValue(leftDif, rightDif);
+                int yDif = GetLowerAbsoluteValue(upperDif, lowerDif);
+                if (MathF.Abs(xDif) < Math.Abs(yDif))
+                {
+                    float targetDif = collider.CollisionBox.Width / 2 + CollisionBox.Width / 2;
+
+                    //sets a new X, based on wether it colliding from the right or left.
+                    newX = collider.GameObject.Transform.Position.X + (xDif > 0 ? -targetDif : targetDif);
+                    
+                    if (xDif > 0 & XVelocity > 0)
+                    {
+                        XVelocity = 0;
+                    }
+                    if (xDif < 0 & XVelocity < 0)
+                    {
+                        XVelocity = 0;
+                    }
+                }
+                else
+                {
+                    float targetDif = collider.CollisionBox.Height / 2f + CollisionBox.Height / 2f;
+
+                    //sets a new Y, based on wether it colliding from above or bellow.
+                    newY = collider.GameObject.Transform.Position.Y + (yDif > 0 ? -targetDif : targetDif);
+
+                    if (yDif > 0 & YVelocity > 0)
+                    {
+                        YVelocity = 0;
+                    }
+                    if (yDif < 0 & YVelocity < 0)
+                    {
+                        YVelocity = 0;
+                    }
+                }
+
+                GameObject.Transform.Position = new Vector2(newX, newY);
+            }
+        }
+
+        private int GetLowerAbsoluteValue(int value1, int value2)
+        {
+            if (MathF.Abs(value1) < MathF.Abs(value2))
+            {
+                return value1;
+            }
+            return value2;
+        }
+
         private void DrawRectangle(Rectangle collisionBox, SpriteBatch spriteBatch)
         {
             Rectangle topLine = new Rectangle(collisionBox.X, collisionBox.Y, collisionBox.Width, 1);
             Rectangle bottomLine = new Rectangle(collisionBox.X, collisionBox.Y + collisionBox.Height, collisionBox.Width, 1);
             Rectangle rightLine = new Rectangle(collisionBox.X + collisionBox.Width, collisionBox.Y, 1, collisionBox.Height);
             Rectangle leftLine = new Rectangle(collisionBox.X, collisionBox.Y, 1, collisionBox.Height);
+            Rectangle center = new Rectangle((int)GameObject.Transform.Position.X - 1, (int)GameObject.Transform.Position.Y - 1, 3, 3);
 
             spriteBatch.Draw(pixel, topLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
             spriteBatch.Draw(pixel, bottomLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
             spriteBatch.Draw(pixel, rightLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
             spriteBatch.Draw(pixel, leftLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
+            spriteBatch.Draw(pixel, center, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
         }
 
         private void UpdatePixelCollider()
@@ -118,6 +193,7 @@ namespace Lizard_game.ComponentPattern
         }
 
 
+
         /// <summary>
         /// checks if the two colliders are colliding acording to pixel perfect collision
         /// </summary>
@@ -153,7 +229,7 @@ namespace Lizard_game.ComponentPattern
         }
 
         /// <summary>
-        /// Determinse wether or not this and another collider are touching
+        /// Determinse wether or not this and another collider are touching.
         /// </summary>
         /// <param name="colider">other collider</param>
         /// <returns></returns>
@@ -161,7 +237,19 @@ namespace Lizard_game.ComponentPattern
         {
             CollisionBox.Deconstruct(out int x1, out int y1, out int w1, out int h1);
             collider.CollisionBox.Deconstruct(out int x2, out int y2, out int w2, out int h2);
-            return (x1 <= x2 + w2 & x1 + w1 >= x2) & (y1 <= y2 + h2 & y2 + h1 >= y2);
+            return (x1 <= x2 + w2 & x1 + w1 >= x2) & (y1 <= y2 + h2 & y1 + h1 >= y2);
+        }
+
+        /// <summary>
+        /// Determinse wether or not this is touching the top of another collider.
+        /// </summary>
+        /// <param name="collider">The other collider.</param>
+        /// <returns>returns true if this collider is touching the top of the other collider.</returns>
+        public bool IsTouchingTopOf(Collider collider)
+        {
+            CollisionBox.Deconstruct(out int x1, out int y1, out int w1, out int h1);
+            collider.CollisionBox.Deconstruct(out int x2, out int y2, out int w2, out int h2);
+            return (x1 <= x2 + w2 & x1 + w1 >= x2) & (y1 + h1 == y2);
         }
 
     }
@@ -182,7 +270,7 @@ namespace Lizard_game.ComponentPattern
             this.X = x;
             this.Y = y;
         }
-        
+
         public void UpdatePosition(GameObject gameObject, int width, int height)
         {
             Rectangle = new Rectangle((int)gameObject.Transform.Position.X + X - width / 2,

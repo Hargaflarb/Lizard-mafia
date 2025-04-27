@@ -45,9 +45,9 @@ namespace Lizard_game.ComponentPattern
             }
         }
 
-        public Component GetComponent<T>() where T : Component
+        public T GetComponent<T>() where T : Component
         {
-            return components.Find(x => x.GetType() == typeof(T));
+            return (T)components.Find(x => x.GetType() == typeof(T));
         }
 
         public void Awake()

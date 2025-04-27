@@ -10,12 +10,14 @@ namespace Lizard_game
     public class Transform
     {
         private Vector2 position;
+        private Vector2 size;
         private float rotation;
         private float scale;
 
-        public Vector2 Position { get; set; }
-        public float Rotation { get; set; }
-        public float Scale { get; set; }
+        public Vector2 Position { get => position; set => position = value; }
+        public Vector2 Size { get => size; set => size = value; }
+        public float Rotation { get => rotation; set => rotation = value; }
+        public float Scale { get => scale; set => scale = value; }
 
         public void Translate(Vector2 translation)
         {
