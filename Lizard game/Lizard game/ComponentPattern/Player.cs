@@ -11,7 +11,7 @@ namespace Lizard_game.ComponentPattern
     {
         public const float walkingSpeed = 100;
         public const float runningSpeed = 300;
-        public const float jumpSpeed = 400;
+        public const float jumpSpeed = 250;
 
         private float speed;
         private bool isHiding;
@@ -71,11 +71,27 @@ namespace Lizard_game.ComponentPattern
             }
         }
 
+        public void Sprint()
+        {
+            if ((bool)((Gravity)GameObject.GetComponent<Gravity>())?.TouchingGround)
+            {
+                Speed *= 1.04f;
+                if (Speed > runningSpeed)
+                {
+                    Speed = runningSpeed;
+                }
+            }
+        }
 
         public override void Update()
         {
             Move();
-            Speed *= 0.98f;
+
+            if ((bool)((Gravity)GameObject.GetComponent<Gravity>())?.TouchingGround)
+            {
+                Speed *= 0.98f;
+            }
+
             if (Speed == 0)
             {
                 ((Animator)GameWorld.Instance.PlayerObject.GetComponent<Animator>()).PlayAnimation("Idle");
@@ -85,7 +101,6 @@ namespace Lizard_game.ComponentPattern
         public override void OnCollision(Collider collider)
         {
             base.OnCollision(collider);
-            Speed = 0;
         }
     }
 }
