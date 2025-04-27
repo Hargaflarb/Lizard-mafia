@@ -40,7 +40,7 @@ namespace Lizard_game.Factory
             GameObject wallObject = new GameObject();
             SpriteRenderer wallSpriteRenderer = wallObject.AddComponent<SpriteRenderer>();
             wallSpriteRenderer.DoSizeRender = true;
-            wallSpriteRenderer.SetSprite("butan");
+            wallSpriteRenderer.SetSprite("mincwaft_gwast");
             wallObject.AddComponent<Collider>();
             wallObject.AddComponent<Wall>(position, size);
             return wallObject;

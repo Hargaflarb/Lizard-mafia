@@ -24,7 +24,6 @@ namespace Lizard_game.ComponentPattern
 
         public override void Awake()
         {
-            GameObject.GetComponent<SpriteRenderer>().SetSprite(GameWorld.Instance.Content.Load<Texture2D>("butan"));
             base.Awake();
         }
         public override void Start()

@@ -63,9 +63,12 @@ namespace Lizard_game
             gameObjectsToAdd = new List<GameObject>();
             gameObjectsToRemove = new List<GameObject>();
             
-            AddObject(WallFactory.Instance.CreateWall(new Rectangle(200, 900, 1000, 50)));
-            AddObject(WallFactory.Instance.CreateWall(new Rectangle(800, 800, 800, 400)));
-            AddObject(WallFactory.Instance.CreateWall(new Rectangle(200, 800, 200, 100)));
+            AddObject(WallFactory.Instance.CreateWall(new Rectangle(400, 900, 400, 300)));
+            AddObject(WallFactory.Instance.CreateWall(new Rectangle(800, 800, 600, 400)));
+            AddObject(WallFactory.Instance.CreateWall(new Rectangle(200, 800, 200, 300)));
+            AddObject(WallFactory.Instance.CreateWall(new Rectangle(1600, 500, 200, 600)));
+            AddObject(WallFactory.Instance.CreateWall(new Rectangle(1400, 650, 200, 600)));
+            AddObject(WallFactory.Instance.CreateWall(new Rectangle(500, 350, 600, 150)));
 
             //feel free to edit starting position
             PlayerObject = CreatePlayer(new Vector2(1000, 500));

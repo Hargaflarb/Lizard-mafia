@@ -37,7 +37,7 @@ namespace Lizard_game.ComponentPattern
         public override void Update()
         {
             currentState.Execute();
-            timeSinceCollision += (float)GameWorld.Instance.DeltaTime;
+            timeSinceCollision += GameWorld.Instance.DeltaTime;
             if (timeSinceCollision >= 5)
             {
                 speed = 300;
