@@ -11,7 +11,7 @@ namespace Lizard_game.ComponentPattern
     {
         public const float walkingSpeed = 100;
         public const float runningSpeed = 400;
-        public const float jumpSpeed = 250;
+        public const float jumpSpeed = 300;
 
         private float speed;
         private bool isHiding;

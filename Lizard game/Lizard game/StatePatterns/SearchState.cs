@@ -1,16 +1,18 @@
 ﻿using Lizard_game.ComponentPattern;
-using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 
 namespace Lizard_game.StatePatterns
 {
-    public class MoveState : IState<Enemy>
+    public class SearchState : IState<Enemy>
     {
-        public const int trackingDisatnace = 700;
+        public const int discoveryDisatnace = 600;
         private Enemy parent;
         private Player player;
 
@@ -24,17 +26,11 @@ namespace Lizard_game.StatePatterns
         {
             Vector2 playerPos = player.GameObject.Transform.Position;
             Vector2 enemyPos = parent.GameObject.Transform.Position;
-
             Vector2 direction = playerPos - enemyPos;
 
-            if (direction.Length() <= trackingDisatnace)
+            if (direction.Length() <= discoveryDisatnace)
             {
-                direction.Normalize();
-                parent.Move(direction);
-            }
-            else
-            {
-                parent.ChangeState(new SearchState());
+                parent.ChangeState(new MoveState());
             }
         }
 
