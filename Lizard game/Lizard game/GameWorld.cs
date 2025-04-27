@@ -75,16 +75,16 @@ namespace Lizard_game
             AddObject(enemyObject);
 
             AddObject(WallFactory.Instance.CreateWall(new Rectangle(200, 900, 1000, 50)));
-            AddObject(WallFactory.Instance.CreateWall(new Rectangle(800, 800, 400, 400)));
+            AddObject(WallFactory.Instance.CreateWall(new Rectangle(800, 800, 800, 400)));
             AddObject(WallFactory.Instance.CreateWall(new Rectangle(200, 800, 200, 100)));
 
             //feel free to edit starting position
             PlayerObject = CreatePlayer(new Vector2(1000, 500));
-            InputHandler.AddHeldKeyBind(Keys.D, new MoveCommand((Player)PlayerObject.GetComponent<Player>(), 1));
-            InputHandler.AddHeldKeyBind(Keys.A, new MoveCommand((Player)PlayerObject.GetComponent<Player>(), -1));
-            InputHandler.AddHeldKeyBind(Keys.LeftShift, new SprintCommand((Player)PlayerObject.GetComponent<Player>()));
-            InputHandler.AddClickedKeyBind(Keys.Space, new JumpCommand((Player)PlayerObject.GetComponent<Player>()));
-            InputHandler.AddClickedKeyBind(Keys.R, new ResetCommand((Player)PlayerObject.GetComponent<Player>()));
+            InputHandler.AddHeldKeyBind(Keys.D, new MoveCommand(PlayerObject.GetComponent<Player>(), 1));
+            InputHandler.AddHeldKeyBind(Keys.A, new MoveCommand(PlayerObject.GetComponent<Player>(), -1));
+            InputHandler.AddHeldKeyBind(Keys.LeftShift, new SprintCommand(PlayerObject.GetComponent<Player>()));
+            InputHandler.AddClickedKeyBind(Keys.Space, new JumpCommand(PlayerObject.GetComponent<Player>()));
+            InputHandler.AddClickedKeyBind(Keys.R, new ResetCommand(PlayerObject.GetComponent<Player>()));
 
             base.Initialize();
         }
