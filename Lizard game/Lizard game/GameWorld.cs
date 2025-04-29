@@ -95,14 +95,14 @@ namespace Lizard_game
             Pixel = Content.Load<Texture2D>("Pixel");
             //add animations to the player (made here to load the textures)
             Texture2D idleSprite = Content.Load<Texture2D>("playerIdle");
-            ((Animator)PlayerObject.GetComponent<Animator>()).AddAnimation(new Animation("Idle", new Texture2D[] { idleSprite }, 1));
+            playerObject.GetComponent<Animator>().AddAnimation(new Animation("Idle", new Texture2D[] { idleSprite }, 1));
             Texture2D[] walkAnim = new Texture2D[8];
             for (int i = 0; i < 8; i++)
             {
                 walkAnim[i] = Content.Load<Texture2D>("playerWalk/walk anim frame " + (i + 1));
             }
-            ((Animator)PlayerObject.GetComponent<Animator>()).AddAnimation(new Animation("Walk", walkAnim, 12));
-            ((SpriteRenderer)PlayerObject.GetComponent<SpriteRenderer>()).SetSprite(idleSprite);
+            PlayerObject.GetComponent<Animator>().AddAnimation(new Animation("Walk", walkAnim, 12));
+            PlayerObject.GetComponent<SpriteRenderer>().SetSprite(idleSprite);
             // TODO: use this.Content to load your game content here
         }
 
