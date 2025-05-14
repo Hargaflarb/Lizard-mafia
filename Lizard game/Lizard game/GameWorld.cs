@@ -19,6 +19,8 @@ namespace Lizard_game
         private List<GameObject> gameObjectsToAdd;
         private List<GameObject> gameObjectsToRemove;
         private GameObject playerObject;
+        private GameObject shadows;
+        private Effect effect;
         private bool isAlive = true;
 
 
@@ -70,6 +72,10 @@ namespace Lizard_game
             AddObject(WallFactory.Instance.CreateWall(new Rectangle(1400, 650, 200, 600)));
             AddObject(WallFactory.Instance.CreateWall(new Rectangle(500, 350, 600, 150)));
 
+            shadows = new GameObject();
+            shadows.AddComponent<ShadowMap>().SetSprite();
+            AddObject(shadows);
+            
             //feel free to edit starting position
             PlayerObject = CreatePlayer(new Vector2(1000, 500));
 
@@ -92,6 +98,7 @@ namespace Lizard_game
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            effect = Content.Load<Effect>("TestShader");
             Pixel = Content.Load<Texture2D>("Pixel");
             //add animations to the player (made here to load the textures)
             Texture2D idleSprite = Content.Load<Texture2D>("playerIdle");
@@ -161,13 +168,15 @@ namespace Lizard_game
 
         protected override void Draw(GameTime gameTime)
         {
+            shadows.GetComponent<ShadowMap>().PrepareShadows(_spriteBatch);
+
+            // TODO: Add your drawing code here
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(blendState: BlendState.AlphaBlend);
             foreach (GameObject gameObject in activeGameObjects)
             {
                 gameObject.Draw(_spriteBatch);
             }
-            // TODO: Add your drawing code here
             _spriteBatch.End();
             base.Draw(gameTime);
         }
@@ -209,6 +218,7 @@ namespace Lizard_game
             newPlayer.AddComponent<Gravity>();
             newPlayer.AddComponent<SpriteRenderer>();
             newPlayer.AddComponent<Animator>();
+            newPlayer.AddComponent<LightEmitter>();
             newPlayer.Transform.Position = position;
             AddObject(newPlayer);
             return newPlayer;
