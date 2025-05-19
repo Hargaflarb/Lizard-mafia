@@ -13,14 +13,5 @@ namespace Lizard_game.ComponentPattern
         {
 
         }
-
-
-        public Vector2 AlteredPosition
-        {
-            get
-            {
-                return GameObject.Transform.Position / GameWorld.Instance.GraphicsDevice.PresentationParameters.Bounds.Size.ToVector2();
-            }
-        }
     }
 }

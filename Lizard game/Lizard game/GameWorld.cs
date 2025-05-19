@@ -19,13 +19,16 @@ namespace Lizard_game
         private List<GameObject> gameObjectsToAdd;
         private List<GameObject> gameObjectsToRemove;
         private GameObject playerObject;
+        private GameObject bugObject;
         private GameObject shadows;
         private Effect effect;
         private bool isAlive = true;
 
 
+        public GameObject BugObject { get => bugObject; set => bugObject = value; }
         public GameObject PlayerObject { get => playerObject; private set => playerObject = value; }
         public float DeltaTime { get => deltaTime; set => deltaTime = value; }
+        public bool IsAlive { get => isAlive; set => isAlive = value; }
         public GraphicsDeviceManager Graphics { get { return _graphics; } }
 
 
@@ -42,7 +45,6 @@ namespace Lizard_game
                 return instance;
             }
         }
-        public bool IsAlive { get => isAlive; set => isAlive = value; }
 
         private GameWorld()
         {
@@ -79,8 +81,8 @@ namespace Lizard_game
             //feel free to edit starting position
             PlayerObject = CreatePlayer(new Vector2(1000, 500));
 
-            GameObject bugObject = BugFactory.Instance.CreateBug(new Vector2(600, 300));
-            AddObject(bugObject);
+            BugObject = BugFactory.Instance.CreateBug(new Vector2(1000, 700));
+            AddObject(BugObject);
 
             //feel free to edit starting position
             GameObject enemyObject = EnemyFactory.Instance.CreateEnemy(new Vector2(100, 700));

@@ -8,6 +8,44 @@ using System.Threading.Tasks;
 
 namespace Lizard_game.ComponentPattern
 {
+    public struct ShadowInterval
+    {
+        private float upperAngle;
+        private float lowerAngle;
+        private float angleOffset;
+        private float distance;
+
+        public ShadowInterval(ShadowCaster shadowCaster, LightEmitter light)
+        {
+            distance = shadowCaster.NormalizedDistanceToLight(light);
+            float nondistance = shadowCaster.CalculateDistanceToLight(light);
+            float BaseAngle = shadowCaster.CalculateLightToShadowAngle(light);
+            float AngleIntervalSize = shadowCaster.CalculateAngle(nondistance);
+            if (BaseAngle + AngleIntervalSize > MathF.PI * 2)
+            {
+                angleOffset = -((MathF.PI * 2) % (BaseAngle + AngleIntervalSize));
+            }
+            else if (BaseAngle - AngleIntervalSize < 0)
+            {
+                // double negativity
+                angleOffset = -(BaseAngle - AngleIntervalSize);
+            }
+            else
+            {
+                angleOffset = 0;
+            }
+            upperAngle = BaseAngle + AngleIntervalSize + angleOffset;
+            lowerAngle = BaseAngle - AngleIntervalSize + angleOffset;
+        }
+
+        public float UpperAngle { get => upperAngle; }
+        public float LowerAngle { get => lowerAngle; }
+        public float AngleOffset { get => angleOffset; }
+        public float Distance { get => distance; }
+    }
+
+
+
     public class ShadowMap : Component
     {
         private RenderTarget2D shadowTarget;
@@ -60,6 +98,13 @@ namespace Lizard_game.ComponentPattern
             }
             shaderEffect.Parameters["lightPositions"].SetValue(hi);
             shaderEffect.Parameters["lightRadius"].SetValue(0.15f);
+
+
+            ShadowInterval shadow = new ShadowInterval(GameWorld.Instance.BugObject.GetComponent<ShadowCaster>(), GameWorld.Instance.PlayerObject.GetComponent<LightEmitter>());
+            shaderEffect.Parameters["Upper"].SetValue(shadow.UpperAngle);
+            shaderEffect.Parameters["Lower"].SetValue(shadow.LowerAngle);
+            shaderEffect.Parameters["Offset"].SetValue(shadow.AngleOffset);
+            shaderEffect.Parameters["Distance"].SetValue(shadow.Distance);
 
             spriteBatch.Begin(blendState: BlendState.Additive, effect: shaderEffect);
             spriteBatch.Draw(ShadowSprite, new Vector2(0, 0), color);

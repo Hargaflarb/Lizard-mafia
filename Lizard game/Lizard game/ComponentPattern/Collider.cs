@@ -13,7 +13,7 @@ namespace Lizard_game.ComponentPattern
     {
         private Texture2D pixel;
         private SpriteRenderer spriteRenderer;
-        private bool isDrawing = false;
+        private bool isDrawing = true;
         private List<RectangleData> pixelPerfectRectangles;
 
         public List<RectangleData> PixelPerfectRectangles { get => pixelPerfectRectangles; set => pixelPerfectRectangles = value; }
@@ -44,7 +44,7 @@ namespace Lizard_game.ComponentPattern
 
         public override void Start()
         {
-            spriteRenderer = GameObject.GetComponent<SpriteRenderer>() as SpriteRenderer;
+            spriteRenderer = GameObject.GetComponent<SpriteRenderer>();
             pixel = GameWorld.Instance.Pixel;
             PixelPerfectRectangles = new List<RectangleData>();
         }

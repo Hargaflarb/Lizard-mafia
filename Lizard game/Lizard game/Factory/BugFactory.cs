@@ -34,7 +34,8 @@ namespace Lizard_game.Factory
             GameObject bugObject = new GameObject();
             SpriteRenderer bugSpriteRenderer = bugObject.AddComponent<SpriteRenderer>();
             bugObject.AddComponent<Bug>();
-            bugObject.AddComponent<ShadowCaster>();
+            bugObject.AddComponent<ShadowCaster>(10f);
+            bugObject.AddComponent<Collider>();
             bugSpriteRenderer.SetSprite("bug");
             bugObject.Transform.Position = position;
             bugObject.Transform.Scale = 0.25f;
