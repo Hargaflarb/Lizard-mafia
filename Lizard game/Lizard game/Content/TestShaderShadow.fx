@@ -43,7 +43,7 @@ float2 AdjustForAspectRatio(float2 position)
 
 float IsInShadow(float2 dif)
 {
-    float Pa = atan2(dif.y, dif.x) + Offset;
+    float Pa = atan2(dif.y, dif.x); //+ Offset;
     return step((abs(Upper - Pa) + abs(Pa - Lower)), abs(Upper - Lower));
 
     //return (Pa <= Upper) & (Pa >= Lower) & (Distance <= length(dif));

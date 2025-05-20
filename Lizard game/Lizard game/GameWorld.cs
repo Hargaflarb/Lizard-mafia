@@ -79,7 +79,7 @@ namespace Lizard_game
             //feel free to edit starting position
             PlayerObject = CreatePlayer(new Vector2(1000, 500));
 
-            BugObject = BugFactory.Instance.CreateBug(new Vector2(1000, 700));
+            BugObject = BugFactory.Instance.CreateBug(new Vector2(1000, 900));
             AddObject(BugObject);
 
             //feel free to edit starting position
