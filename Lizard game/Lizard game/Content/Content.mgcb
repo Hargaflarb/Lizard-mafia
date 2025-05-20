@@ -211,6 +211,12 @@
 /processorParam:DebugMode=Auto
 /build:TestShader.fx
 
+#begin TestShaderShadow.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:TestShaderShadow.fx
+
 #begin wasp.png
 /importer:TextureImporter
 /processor:TextureProcessor

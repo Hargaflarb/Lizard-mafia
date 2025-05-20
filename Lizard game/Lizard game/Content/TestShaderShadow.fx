@@ -1,12 +1,10 @@
-﻿
-
-#if OPENGL
-#define SV_POSITION POSITION
-#define VS_SHADERMODEL vs_3_0
-#define PS_SHADERMODEL ps_3_0
+﻿#if OPENGL
+	#define SV_POSITION POSITION
+	#define VS_SHADERMODEL vs_3_0
+	#define PS_SHADERMODEL ps_3_0
 #else
-#define VS_SHADERMODEL vs_4_0_level_9_1
-#define PS_SHADERMODEL ps_4_0_level_9_1
+	#define VS_SHADERMODEL vs_4_0_level_9_1
+	#define PS_SHADERMODEL ps_4_0_level_9_1
 #endif
 
 Texture2D SpriteTexture;
@@ -28,14 +26,14 @@ extern float Distance;
 
 sampler2D SpriteTextureSampler = sampler_state
 {
-    Texture = <SpriteTexture>;
+	Texture = <SpriteTexture>;
 };
 
 struct VertexShaderOutput
 {
-    float4 Position : SV_POSITION;
-    float4 Color : COLOR0;
-    float2 TextureCoordinates : TEXCOORD0;
+	float4 Position : SV_POSITION;
+	float4 Color : COLOR0;
+	float2 TextureCoordinates : TEXCOORD0;
 };
 
 float2 AdjustForAspectRatio(float2 position)
@@ -45,7 +43,7 @@ float2 AdjustForAspectRatio(float2 position)
 
 float IsInShadow(float2 dif)
 {
-    float Pa = atan2(dif.y, dif.x); // + Offset;
+    float Pa = atan2(dif.y, dif.x) + Offset;
     return step((abs(Upper - Pa) + abs(Pa - Lower)), abs(Upper - Lower));
 
     //return (Pa <= Upper) & (Pa >= Lower) & (Distance <= length(dif));
@@ -59,19 +57,17 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float1 lightRadius = input.Color.z;
     
     float2 dif = AdjustForAspectRatio(pixelPosition - lightPosition);
-    //float2 dif = AdjustForAspectRatio(pixelPosition - lightPositions[0]);
     float distance = length(dif);
-    pixelColor.a -= 1 - clamp((distance - (lightRadius - fadeLength)) * resizer, 0, 1);
     pixelColor.a += IsInShadow(dif) * step(Distance, distance);
     
-    pixelColor.a = 1 - pixelColor.a;
+
     return pixelColor;
 }
 
 technique SpriteDrawing
 {
-    pass P0
-    {
-        PixelShader = compile PS_SHADERMODEL /**/MainPS();
-    }
+	pass P0
+	{
+		PixelShader = compile PS_SHADERMODEL MainPS();
+	}
 };
