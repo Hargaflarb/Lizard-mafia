@@ -61,12 +61,12 @@ namespace Lizard_game
             _graphics.PreferredBackBufferWidth = 1920;
             _graphics.ApplyChanges();
             InputHandler.Reset();
-            
+
 
             activeGameObjects = new List<GameObject>();
             gameObjectsToAdd = new List<GameObject>();
             gameObjectsToRemove = new List<GameObject>();
-            
+
             AddObject(WallFactory.Instance.CreateWall(new Rectangle(400, 900, 400, 300)));
             AddObject(WallFactory.Instance.CreateWall(new Rectangle(800, 800, 600, 400)));
             AddObject(WallFactory.Instance.CreateWall(new Rectangle(200, 800, 200, 300)));
@@ -77,15 +77,15 @@ namespace Lizard_game
             ShadowMap.SetSprite();
 
             //feel free to edit starting position
-            PlayerObject = CreatePlayer(new Vector2(1000, 500));
+            PlayerObject = CreatePlayer(new Vector2(988.3331f, 765));
 
-            BugObject = BugFactory.Instance.CreateBug(new Vector2(1000, 900));
+            BugObject = BugFactory.Instance.CreateBug(new Vector2(1000, 700));
             AddObject(BugObject);
 
             //feel free to edit starting position
             GameObject enemyObject = EnemyFactory.Instance.CreateEnemy(new Vector2(100, 700));
             AddObject(enemyObject);
-            
+
 
             InputHandler.AddHeldKeyBind(Keys.D, new MoveCommand(PlayerObject.GetComponent<Player>(), 1));
             InputHandler.AddHeldKeyBind(Keys.A, new MoveCommand(PlayerObject.GetComponent<Player>(), -1));
@@ -179,6 +179,7 @@ namespace Lizard_game
                 gameObject.Draw(_spriteBatch);
             }
             ShadowMap.Draw(_spriteBatch);
+
             _spriteBatch.End();
             base.Draw(gameTime);
         }
@@ -229,21 +230,33 @@ namespace Lizard_game
         public (List<LightEmitter> lightEmitters, List<ShadowInterval> shadowIntervals) GetShaderData()
         {
             List<LightEmitter> lightEmitters = new List<LightEmitter>();
-            List<ShadowInterval> shadowCasters = new List<ShadowInterval>(); 
+            List<ShadowInterval> shadows = new List<ShadowInterval>();
             foreach (GameObject gameObject in activeGameObjects)
             {
-                Component shaderComponent;
-                if ((shaderComponent = gameObject.GetComponent<LightEmitter>()) is not null)
+                LightEmitter lightEmitter;
+                if ((lightEmitter = gameObject.GetComponent<LightEmitter>()) is not null)
                 {
-                    lightEmitters.Add((LightEmitter)shaderComponent);
+                    lightEmitters.Add(lightEmitter);
                 }
-                else if ((shaderComponent = gameObject.GetComponent<ShadowCaster>()) is not null)
-                {
 
-                    //shadowCasters.Add((ShadowInterval)shaderComponent);
+            }
+
+            foreach (GameObject gameObject in activeGameObjects)
+            {
+                ShadowCaster shadowCaster;
+                if ((shadowCaster = gameObject.GetComponent<ShadowCaster>()) is not null)
+                {
+                    foreach (LightEmitter light in lightEmitters)
+                    {
+                        if ((shadowCaster.GameObject.Transform.Position - light.GameObject.Transform.Position).Length() < light.Radius * Graphics.PreferredBackBufferWidth)
+                        {
+                            shadows.Add(new ShadowInterval(shadowCaster, light));
+                        }
+                    }
                 }
             }
-            return (lightEmitters, shadowCasters);
+
+            return (lightEmitters, shadows);
         }
     }
 }

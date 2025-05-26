@@ -64,7 +64,7 @@ namespace Lizard_game.ComponentPattern
         {
             if (!doSizeRender)
             {
-                spriteBatch.Draw(Sprite, GameObject.Transform.Position, null, Color, GameObject.Transform.Rotation, Origin, GameObject.Transform.Scale, SpriteEffects.None, 0);
+                spriteBatch.Draw(Sprite, GameObject.Transform.Position, null, Color, GameObject.Transform.Rotation, Origin, GameObject.Transform.Scale, SpriteEffects.None, 0.5f);
             }
             else
             {

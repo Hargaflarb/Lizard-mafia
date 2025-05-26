@@ -13,8 +13,7 @@ Texture2D SpriteTexture;
 
 static const float aspectRatio = 9.0 / 16.0;
 static const float fadeLength = 0.05;
-static const float resizer = 1 / fadeLength;
-extern float2 lightPositions[5];
+static const float resizer = 1.0 / fadeLength;
 
 
 // messured in % of the screen(image) width
@@ -45,7 +44,7 @@ float2 AdjustForAspectRatio(float2 position)
 
 float IsInShadow(float2 dif)
 {
-    float Pa = atan2(dif.y, dif.x); // + Offset;
+    float Pa = atan2(dif.y, dif.x) + Offset;
     return step((abs(Upper - Pa) + abs(Pa - Lower)), abs(Upper - Lower));
 
     //return (Pa <= Upper) & (Pa >= Lower) & (Distance <= length(dif));
@@ -61,10 +60,11 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float2 dif = AdjustForAspectRatio(pixelPosition - lightPosition);
     //float2 dif = AdjustForAspectRatio(pixelPosition - lightPositions[0]);
     float distance = length(dif);
-    pixelColor.a -= 1 - clamp((distance - (lightRadius - fadeLength)) * resizer, 0, 1);
-    pixelColor.a += IsInShadow(dif) * step(Distance, distance);
+    pixelColor.a -= 1 - clamp((distance - (lightRadius - fadeLength)) * resizer, 0.0, 1.0);
+    //pixelColor.a += IsInShadow(dif) * step(Distance, distance);
     
     pixelColor.a = 1 - pixelColor.a;
+
     return pixelColor;
 }
 

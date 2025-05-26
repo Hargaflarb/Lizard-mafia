@@ -35,7 +35,8 @@ namespace Lizard_game.Factory
             SpriteRenderer enemyRenderer = enemyObject.AddComponent<SpriteRenderer>();
             enemyObject.AddComponent<Enemy>();
             enemyObject.AddComponent<Collider>();
-            enemyObject.AddComponent<ShadowCaster>(20f);
+            enemyObject.AddComponent<LightEmitter>(0.20f);
+            //enemyObject.AddComponent<ShadowCaster>(20f);
             enemyRenderer.SetSprite("wasp");
             enemyObject.Transform.Position = position;
             enemyObject.Transform.Scale = 0.25f;
