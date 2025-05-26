@@ -13,8 +13,8 @@ static const float aspectRatio = 9.0 / 16.0;
 static const float fadeLength = 0.05;
 static const float resizer = 1.0 / fadeLength;
 
-extern float3 shadowData[100];
-extern float2 lightPositions[100];
+extern float3 shadowData[3];
+extern float2 lightPositions[3];
 
 
 sampler2D SpriteTextureSampler = sampler_state
@@ -57,7 +57,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     
     float2 dif = AdjustForAspectRatio(pixelPosition - lightPosition);
     float pixelDistance = length(dif);
-    pixelColor.a += IsInShadow(dif, angleOffset, upperAngle) * step(casterDistance, pixelDistance) * (1 - clamp((pixelDistance - (0.3 - fadeLength)) * resizer, 0.0, 1.0));
+    pixelColor.a += IsInShadow(dif, angleOffset, upperAngle) * step(casterDistance, pixelDistance) * (1 - clamp((pixelDistance - (0.15 - fadeLength)) * resizer, 0.0, 1.0));
     
 
     return pixelColor;
