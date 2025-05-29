@@ -52,18 +52,22 @@ float IsInShadow(float2 dif)
 
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
-    float4 pixelColor = tex2D(SpriteTextureSampler, input.TextureCoordinates);
-    float2 pixelPosition = input.TextureCoordinates;
-    float2 lightPosition = input.Color.xy;
-    float1 lightRadius = input.Color.z;
+    float isInShadow = tex2D(SpriteTextureSampler, input.TextureCoordinates).a;
+    float4 pixelColor = float4(0,0,0,1);
     
-    float2 dif = AdjustForAspectRatio(pixelPosition - lightPosition);
-    //float2 dif = AdjustForAspectRatio(pixelPosition - lightPositions[0]);
-    float distance = length(dif);
+    float2 pixelPosition = input.TextureCoordinates;
+    float2 lightPosition = float2(0.5, 0.5); //input.Color.xy;
+    float1 lightRadius = float1(0.5); //input.Color.z;
+    
+    //float2 dif = AdjustForAspectRatio(pixelPosition - lightPosition);
+    //float distance = length(dif);
+    float distance = length(pixelPosition - lightPosition);
     pixelColor.a -= 1 - clamp((distance - (lightRadius - fadeLength)) * resizer, 0.0, 1.0);
     //pixelColor.a += IsInShadow(dif) * step(Distance, distance);
     
     pixelColor.a = 1 - pixelColor.a;
+    
+    pixelColor.a -= isInShadow;
 
     return pixelColor;
 }

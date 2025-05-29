@@ -32,9 +32,5 @@ namespace Lizard_game.ComponentPattern
             // it would have to be inside the shadowcaster's radius.
             return MathF.Asin(objectRadius / lightDistance);
         }
-        public float NormalizedDistanceToLight(LightEmitter light)
-        {
-            return ((light.GameObject.Transform.Position - GameObject.Transform.Position) / GameWorld.Instance.GraphicsDevice.PresentationParameters.Bounds.Size.ToVector2().X).Length();
-        }
     }
 }
