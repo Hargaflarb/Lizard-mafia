@@ -42,14 +42,6 @@ float2 AdjustForAspectRatio(float2 position)
     return float2(position.x, position.y * aspectRatio);
 }
 
-float IsInShadow(float2 dif)
-{
-    float Pa = atan2(dif.y, dif.x) + Offset;
-    return step((abs(Upper - Pa) + abs(Pa - Lower)), abs(Upper - Lower));
-
-    //return (Pa <= Upper) & (Pa >= Lower) & (Distance <= length(dif));
-}
-
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
     float isInShadow = tex2D(SpriteTextureSampler, input.TextureCoordinates).a;

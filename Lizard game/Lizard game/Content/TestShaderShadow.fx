@@ -12,8 +12,12 @@ Texture2D SpriteTexture;
 static const float aspectRatio = 9.0 / 16.0;
 static const float fadeLength = 0.05;
 static const float resizer = 1.0 / fadeLength;
-static const float Pi = 3.14159265359;
-static const float toRadians = 6.28318530718;
+//static const float Pi = 3.14159265359;
+//static const float toRadians = 6.28318530718;
+static const float Pi = 3.1416;
+static const float toRadians = 6.2832;
+//static const float Pi = 3.2;
+//static const float toRadians = 6.3;
 
 sampler2D SpriteTextureSampler = sampler_state
 {
@@ -34,6 +38,10 @@ float2 AdjustForAspectRatio(float2 position)
 
 float IsInShadow(float2 dif, float1 offset, float1 upper)
 {
+    //UpperAngle = 0.218001366;
+    //AngleOffset = 0.894392252;
+    //float Pa = atan2(dif.y, dif.x) + 0.894392252;
+    //return step((abs(0.218001366 - Pa) + abs(Pa)), 0.218001366);
     
     float Pa = atan2(dif.y, dif.x) + offset;
     return step((abs(upper - Pa) + abs(Pa)), upper);
