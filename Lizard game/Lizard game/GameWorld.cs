@@ -171,7 +171,7 @@ namespace Lizard_game
 
         protected override void Draw(GameTime gameTime)
         {
-            ShadowMap.PrepareShadows(_spriteBatch);
+            //ShadowMap.PrepareShadows(_spriteBatch);
 
             // TODO: Add your drawing code here
             GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -180,7 +180,7 @@ namespace Lizard_game
             {
                 gameObject.Draw(_spriteBatch);
             }
-            ShadowMap.Draw(_spriteBatch);
+            //ShadowMap.Draw(_spriteBatch);
 
             _spriteBatch.End();
             base.Draw(gameTime);
