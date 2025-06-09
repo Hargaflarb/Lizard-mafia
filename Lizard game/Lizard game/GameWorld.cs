@@ -21,6 +21,8 @@ namespace Lizard_game
         private GameObject playerObject;
         private GameObject bugObject;
         private GameObject shadows;
+        private RenderTarget2D renderTarget;
+        private RenderTarget2D afterEffectRenderTarget;
         private Effect effect;
         private bool isAlive = true;
 
@@ -99,8 +101,13 @@ namespace Lizard_game
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            renderTarget = new RenderTarget2D(GraphicsDevice, GraphicsDevice.PresentationParameters.BackBufferWidth, GraphicsDevice.PresentationParameters.BackBufferHeight);
+            afterEffectRenderTarget = new RenderTarget2D(GraphicsDevice, GraphicsDevice.PresentationParameters.BackBufferWidth, GraphicsDevice.PresentationParameters.BackBufferHeight);
+
             effect = Content.Load<Effect>("TestShader");
             LightEmitter.ShaderShadowEffect = Content.Load<Effect>("TestShaderShadow");
+
+            ScreenDrawer.LoadContent();
 
             Pixel = Content.Load<Texture2D>("Pixel");
             //add animations to the player (made here to load the textures)
@@ -174,6 +181,7 @@ namespace Lizard_game
             //ShadowMap.PrepareShadows(_spriteBatch);
 
             // TODO: Add your drawing code here
+            GraphicsDevice.SetRenderTarget(renderTarget);
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin(blendState: BlendState.AlphaBlend);
             foreach (GameObject gameObject in activeGameObjects)
@@ -181,8 +189,17 @@ namespace Lizard_game
                 gameObject.Draw(_spriteBatch);
             }
             //ShadowMap.Draw(_spriteBatch);
-
             _spriteBatch.End();
+
+            afterEffectRenderTarget = ScreenDrawer.ApplyEffectTo(_spriteBatch, renderTarget);
+
+            GraphicsDevice.SetRenderTarget(null);
+            GraphicsDevice.Clear(Color.DarkOliveGreen);
+            _spriteBatch.Begin(blendState: BlendState.AlphaBlend);
+            _spriteBatch.Draw(afterEffectRenderTarget, Vector2.Zero,Color.White);
+            _spriteBatch.End();
+
+
             base.Draw(gameTime);
         }
 
