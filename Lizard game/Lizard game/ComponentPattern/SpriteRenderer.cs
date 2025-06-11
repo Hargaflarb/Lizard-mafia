@@ -12,7 +12,7 @@ namespace Lizard_game.ComponentPattern
     {
         private Texture2D sprite;
         private Vector2 origin;
-        private Color color = Color.White;
+        private Color color = Color.Orange;
         private bool doSizeRender = false;
 
         public Texture2D Sprite { get => sprite; set => sprite = value; }

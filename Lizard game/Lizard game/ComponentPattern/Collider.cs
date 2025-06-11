@@ -53,7 +53,7 @@ namespace Lizard_game.ComponentPattern
         {
             if (isDrawing)
             {
-                DrawRectangle(CollisionBox, spriteBatch);
+                //DrawRectangle(CollisionBox, spriteBatch);
                 foreach (var rect in PixelPerfectRectangles)
                 {
                     DrawRectangle(rect.Rectangle, spriteBatch);

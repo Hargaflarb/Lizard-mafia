@@ -11,6 +11,12 @@ Texture2D SpriteTexture;
 
 extern float2 resolution;
 
+static const float3x3 factors = float3x3
+(
+    -0.6, -0.15, 0,
+    -0.15, 0.6, 0.15,
+    0, 0, 0.15
+);
 
 sampler2D SpriteTextureSampler = sampler_state
 {
@@ -37,27 +43,42 @@ float average(float4 color)
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
     //float2 factor = acountForResolution();
-    float2 factor = 0.02;
+    float2 factor = float2(0.001*9, 0.001*16);
+    
+    float4 color = float4(0, 0, 0, 0);
+    
+    [unroll(3)]
+    for (int x = -1; x <= 1; x++)
+    {
+        [unroll(3)]
+        for (int y = -1; x <= 1; y++)
+        {
+            color += tex2D(SpriteTextureSampler, input.TextureCoordinates + (float2(x, y) * factor))  * factors[x + 1][y + 1];
+        }
+    }
     
     float4 color1 = tex2D(SpriteTextureSampler, input.TextureCoordinates);
-    float4 color2 = tex2D(SpriteTextureSampler, input.TextureCoordinates + (float2(1, 0) * factor));
-    float4 color3 = tex2D(SpriteTextureSampler, input.TextureCoordinates + (float2(1, 1) * factor));
-    float4 color4 = tex2D(SpriteTextureSampler, input.TextureCoordinates + (float2(0, 1) * factor));
-    float4 color5 = tex2D(SpriteTextureSampler, input.TextureCoordinates + (float2(-1, 1) * factor));
-    float4 color6 = tex2D(SpriteTextureSampler, input.TextureCoordinates + (float2(-1, 0) * factor));
-    float4 color7 = tex2D(SpriteTextureSampler, input.TextureCoordinates + (float2(-1, -1) * factor));
-    float4 color8 = tex2D(SpriteTextureSampler, input.TextureCoordinates + (float2(0, -1) * factor));
-    float4 color9 = tex2D(SpriteTextureSampler, input.TextureCoordinates + (float2(1, -1) * factor));
+    //float4 color2 = tex2D(SpriteTextureSampler, input.TextureCoordinates + (float2(1, 0) * factor));
+    //float4 color3 = tex2D(SpriteTextureSampler, input.TextureCoordinates + (float2(1, 1) * factor));
+    //float4 color4 = tex2D(SpriteTextureSampler, input.TextureCoordinates + (float2(0, 1) * factor));
+    //float4 color5 = tex2D(SpriteTextureSampler, input.TextureCoordinates + (float2(-1, 1) * factor));
+    //float4 color6 = tex2D(SpriteTextureSampler, input.TextureCoordinates + (float2(-1, 0) * factor));
+    //float4 color7 = tex2D(SpriteTextureSampler, input.TextureCoordinates + (float2(-1, -1) * factor));
+    //float4 color8 = tex2D(SpriteTextureSampler, input.TextureCoordinates + (float2(0, -1) * factor));
+    //float4 color9 = tex2D(SpriteTextureSampler, input.TextureCoordinates + (float2(1, -1) * factor));
 
     //float4 average = (color1 + color2 + color3 + color4 + color5 + color6 + color7 + color8 + color9) / 9;
     //float4 average = (color2 + color3 + color4 + color5 + color6 + color7 + color8 + color9) / 8;
     //float4 average = (color2 + color3 + color5 + color6 + color7 + color9);
     //float4 average = (color2 + color3 + color4 + color6 + color7 + color8);
     //float4 average = (color3 + color7);
-    float4 average = float4(0, 0, 0, 0);
-    //float4 average = color1;
-    average.r += color1.a - color4.a;
-    average.g += color1.a - color8.a;
+    float4 average = color1;
+    average.rgb += input.Color * color.a;
+    //float4 average = float4(0, 0, 0, 0);
+    //average.rg = float2(color.a, -color.a);
+    
+    //average.r += color1.a - color3.a;
+    //average.g += color1.a - color5.a;
     return average;
 }
 
