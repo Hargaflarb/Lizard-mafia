@@ -18,7 +18,8 @@ namespace Lizard_game
         private static RenderTarget2D renderTarget;
         private static GraphicsDevice graphics;
         private static Effect blurEffect;
-        
+
+        public static Effect BlurEffect { get => blurEffect; set => blurEffect = value; }
 
         static ScreenDrawer()
         {
@@ -28,7 +29,7 @@ namespace Lizard_game
 
         public static void LoadContent()
         {
-            blurEffect = GameWorld.Instance.Content.Load<Effect>("BlurEffect");
+            BlurEffect = GameWorld.Instance.Content.Load<Effect>("BlurEffect");
         }
 
         public static RenderTarget2D ApplyEffectTo(SpriteBatch spriteBatch, RenderTarget2D image)
@@ -36,9 +37,9 @@ namespace Lizard_game
             graphics.SetRenderTarget(renderTarget);
             graphics.Clear(Color.Black);
 
-            blurEffect.Parameters["resolution"].SetValue(graphics.PresentationParameters.Bounds.Size.ToVector2());
+            BlurEffect.Parameters["resolution"].SetValue(graphics.PresentationParameters.Bounds.Size.ToVector2());
 
-            spriteBatch.Begin(effect: blurEffect);
+            spriteBatch.Begin(effect: BlurEffect);
             spriteBatch.Draw(image, Vector2.Zero, Color.White);
             spriteBatch.End();
 

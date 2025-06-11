@@ -183,7 +183,7 @@ namespace Lizard_game
             // TODO: Add your drawing code here
             GraphicsDevice.SetRenderTarget(renderTarget);
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            _spriteBatch.Begin(blendState: BlendState.AlphaBlend);
+            _spriteBatch.Begin(blendState: BlendState.AlphaBlend, effect: ScreenDrawer.BlurEffect);
             foreach (GameObject gameObject in activeGameObjects)
             {
                 gameObject.Draw(_spriteBatch);
@@ -191,7 +191,8 @@ namespace Lizard_game
             //ShadowMap.Draw(_spriteBatch);
             _spriteBatch.End();
 
-            afterEffectRenderTarget = ScreenDrawer.ApplyEffectTo(_spriteBatch, renderTarget);
+            //afterEffectRenderTarget = ScreenDrawer.ApplyEffectTo(_spriteBatch, renderTarget);
+            afterEffectRenderTarget = renderTarget;
 
             GraphicsDevice.SetRenderTarget(null);
             GraphicsDevice.Clear(Color.DarkOliveGreen);
