@@ -53,11 +53,11 @@ namespace Lizard_game.ComponentPattern
 
         public Color ToDataPass()
         {
-            float Pi = 6.28318530718f;
+            float Pi2 = 6.28318530718f;
             //UpperAngle = 0.218001366;
             //AngleOffset = 0.894392252;
             //return new Color(0.218001366f / (Pi), (0.894392252f / (Pi)) + 0.5f, Distance);
-            return new Color(UpperAngle / (Pi), (AngleOffset / (Pi)) + 0.5f, Distance);
+            return new Color(UpperAngle / (Pi2), (AngleOffset / (Pi2)) + 0.5f, Distance);
         }
 
     }

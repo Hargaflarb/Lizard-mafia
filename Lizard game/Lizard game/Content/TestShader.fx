@@ -12,7 +12,7 @@
 Texture2D SpriteTexture;
 
 static const float aspectRatio = 9.0 / 16.0;
-static const float fadeLength = 0.05;
+static const float fadeLength = 0.15;
 static const float resizer = 1.0 / fadeLength;
 
 
@@ -41,6 +41,12 @@ float2 AdjustForAspectRatio(float2 position)
 {
     return float2(position.x, position.y * aspectRatio);
 }
+    
+    //float2 dif = AdjustForAspectRatio(pixelPosition - lightPosition);
+    //float distance = length(dif);
+    //pixelColor.a += IsInShadow(dif) * step(Distance, distance);
+//input.Color.xy;
+//input.Color.z;
 
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
@@ -48,14 +54,11 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     float4 pixelColor = float4(0,0,0,1);
     
     float2 pixelPosition = input.TextureCoordinates;
-    float2 lightPosition = float2(0.5, 0.5); //input.Color.xy;
-    float1 lightRadius = float1(0.5); //input.Color.z;
+    float2 lightPosition = float2(0.5, 0.5);
+    float1 lightRadius = float1(0.5);
     
-    //float2 dif = AdjustForAspectRatio(pixelPosition - lightPosition);
-    //float distance = length(dif);
     float distance = length(pixelPosition - lightPosition);
     pixelColor.a -= 1 - clamp((distance - (lightRadius - fadeLength)) * resizer, 0.0, 1.0);
-    //pixelColor.a += IsInShadow(dif) * step(Distance, distance);
     
     pixelColor.a = 1 - pixelColor.a;
     

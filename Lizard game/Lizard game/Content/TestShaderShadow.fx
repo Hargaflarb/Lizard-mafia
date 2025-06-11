@@ -42,11 +42,9 @@ float IsInShadow(float2 dif, float1 offset, float1 upper)
     //AngleOffset = 0.894392252;
     //float Pa = atan2(dif.y, dif.x) + 0.894392252;
     //return step((abs(0.218001366 - Pa) + abs(Pa)), 0.218001366);
-    
+    //return (Pa <= Upper) & (Pa >= Lower) & (Distance <= length(dif));
     float Pa = atan2(dif.y, dif.x) + offset;
     return step((abs(upper - Pa) + abs(Pa)), upper);
-    
-    //return (Pa <= Upper) & (Pa >= Lower) & (Distance <= length(dif));
 }
 
 float4 MainPS(VertexShaderOutput input) : COLOR
@@ -61,13 +59,12 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     
     pixelColor.a = 0;
     
-    //float2 dif = AdjustForAspectRatio(pixelPosition - lightPosition);
     float2 dif = pixelPosition - lightPosition;
     float pixelDistance = length(dif);
     pixelColor.a += IsInShadow(dif, angleOffset, upperAngle) * step(casterDistance, pixelDistance);
     
-
     return pixelColor;
+    //float2 dif = AdjustForAspectRatio(pixelPosition - lightPosition);
 }
 
 technique SpriteDrawing
